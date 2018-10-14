@@ -35,7 +35,11 @@ public class main extends javax.swing.JFrame {
 
         Container = new javax.swing.JPanel();
         exit = new javax.swing.JButton();
-        exit1 = new javax.swing.JButton();
+        about = new javax.swing.JButton();
+        play = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -45,21 +49,41 @@ public class main extends javax.swing.JFrame {
         Container.setPreferredSize(new java.awt.Dimension(1024, 768));
         Container.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        exit.setText("Keluar");
+        exit.setBorderPainted(false);
+        exit.setContentAreaFilled(false);
         exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitActionPerformed(evt);
             }
         });
-        Container.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 620, 180, 60));
+        Container.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 400, 180, 40));
 
-        exit1.setText("Tentang");
-        exit1.addActionListener(new java.awt.event.ActionListener() {
+        about.setBorderPainted(false);
+        about.setContentAreaFilled(false);
+        about.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exit1ActionPerformed(evt);
+                aboutActionPerformed(evt);
             }
         });
-        Container.add(exit1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 540, 180, 60));
+        Container.add(about, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, 180, 40));
+
+        play.setBorderPainted(false);
+        play.setContentAreaFilled(false);
+        play.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playActionPerformed(evt);
+            }
+        });
+        Container.add(play, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 260, 180, 40));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Bt-Mulai.png"))); // NOI18N
+        Container.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, -1, -1));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Bt-Tentang.png"))); // NOI18N
+        Container.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, -1, -1));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Bt-Keluar.png"))); // NOI18N
+        Container.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 390, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Background 1.png"))); // NOI18N
         jLabel1.setMaximumSize(new java.awt.Dimension(1024, 768));
@@ -98,12 +122,19 @@ public class main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exitActionPerformed
 
-    private void exit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exit1ActionPerformed
+    private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
         // TENTANG
         tentang tentang = new tentang();
         tentang.setVisible(true);
         dispose();
-    }//GEN-LAST:event_exit1ActionPerformed
+    }//GEN-LAST:event_aboutActionPerformed
+
+    private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
+        // Mulai
+        play play = new play();
+        play.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_playActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,8 +176,12 @@ public class main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Container;
+    private javax.swing.JButton about;
     private javax.swing.JButton exit;
-    private javax.swing.JButton exit1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton play;
     // End of variables declaration//GEN-END:variables
 }
