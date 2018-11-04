@@ -29,7 +29,6 @@ public class tentang extends javax.swing.JFrame {
 
         exit = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -38,6 +37,7 @@ public class tentang extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/bt-keluar.png"))); // NOI18N
         exit.setBorderPainted(false);
         exit.setContentAreaFilled(false);
         exit.addActionListener(new java.awt.event.ActionListener() {
@@ -47,13 +47,10 @@ public class tentang extends javax.swing.JFrame {
         });
         getContentPane().add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 690, 180, 40));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/profil.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/profil.png"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Bt-Keluar.png"))); // NOI18N
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 680, -1, -1));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Background 1.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/Background 1.png"))); // NOI18N
         jLabel1.setMaximumSize(new java.awt.Dimension(1024, 768));
         jLabel1.setMinimumSize(new java.awt.Dimension(1024, 768));
         jLabel1.setPreferredSize(new java.awt.Dimension(1024, 768));
@@ -108,6 +105,5 @@ public class tentang extends javax.swing.JFrame {
     private javax.swing.JButton exit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

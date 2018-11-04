@@ -27,22 +27,265 @@ public class inventori extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        kayu = new javax.swing.JButton();
+        pupukbeli = new javax.swing.JButton();
+        pupukplus = new javax.swing.JButton();
+        pupukmin = new javax.swing.JButton();
+        pestbeli = new javax.swing.JButton();
+        pestmin = new javax.swing.JButton();
+        pestplus = new javax.swing.JButton();
+        nmahoni = new javax.swing.JLabel();
+        njati = new javax.swing.JLabel();
+        ngaharu = new javax.swing.JLabel();
+        ndamar = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        nilaipest = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        pupuk = new javax.swing.JLabel();
+        pestisida = new javax.swing.JLabel();
+        uang = new javax.swing.JLabel();
+        nilaipupuk = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+
         setMaximumSize(new java.awt.Dimension(845, 661));
         setMinimumSize(new java.awt.Dimension(845, 661));
+        setPreferredSize(new java.awt.Dimension(845, 661));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 845, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 661, Short.MAX_VALUE)
-        );
+        kayu.setBorderPainted(false);
+        kayu.setContentAreaFilled(false);
+        kayu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kayuActionPerformed(evt);
+            }
+        });
+        add(kayu, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 245, 70, 70));
+
+        pupukbeli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/bt-beli1.png"))); // NOI18N
+        pupukbeli.setBorderPainted(false);
+        pupukbeli.setContentAreaFilled(false);
+        pupukbeli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pupukbeliActionPerformed(evt);
+            }
+        });
+        add(pupukbeli, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 420, 60, 20));
+
+        pupukplus.setBorderPainted(false);
+        pupukplus.setContentAreaFilled(false);
+        pupukplus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pupukplusActionPerformed(evt);
+            }
+        });
+        add(pupukplus, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 390, 30, 20));
+
+        pupukmin.setBorderPainted(false);
+        pupukmin.setContentAreaFilled(false);
+        pupukmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pupukminActionPerformed(evt);
+            }
+        });
+        add(pupukmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 390, 30, 20));
+
+        pestbeli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/bt-beli1.png"))); // NOI18N
+        pestbeli.setBorderPainted(false);
+        pestbeli.setContentAreaFilled(false);
+        pestbeli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pestbeliActionPerformed(evt);
+            }
+        });
+        add(pestbeli, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 420, 60, 20));
+
+        pestmin.setBorderPainted(false);
+        pestmin.setContentAreaFilled(false);
+        pestmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pestminActionPerformed(evt);
+            }
+        });
+        add(pestmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 30, 20));
+
+        pestplus.setBorderPainted(false);
+        pestplus.setContentAreaFilled(false);
+        pestplus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pestplusActionPerformed(evt);
+            }
+        });
+        add(pestplus, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 390, 30, 20));
+
+        nmahoni.setFont(new java.awt.Font("Game Sans Serif 7", 0, 11)); // NOI18N
+        nmahoni.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        nmahoni.setText("0");
+        add(nmahoni, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 410, 30, -1));
+
+        njati.setFont(new java.awt.Font("Game Sans Serif 7", 0, 11)); // NOI18N
+        njati.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        njati.setText("0");
+        add(njati, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 30, -1));
+
+        ngaharu.setFont(new java.awt.Font("Game Sans Serif 7", 0, 11)); // NOI18N
+        ngaharu.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        ngaharu.setText("0");
+        add(ngaharu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 30, -1));
+
+        ndamar.setFont(new java.awt.Font("Game Sans Serif 7", 0, 11)); // NOI18N
+        ndamar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        ndamar.setText("0");
+        add(ndamar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 30, -1));
+
+        jLabel6.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("-");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 30, 20));
+
+        nilaipest.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipest.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipest.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipest.setText("0");
+        add(nilaipest, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 390, 40, 20));
+
+        jLabel8.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("+");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 390, 30, 20));
+
+        jLabel5.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("-");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 390, 30, 20));
+
+        jLabel2.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("+");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 390, 30, 20));
+
+        pupuk.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
+        pupuk.setForeground(new java.awt.Color(0, 0, 0));
+        pupuk.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        pupuk.setText("0");
+        add(pupuk, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 20, 40, 30));
+
+        pestisida.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
+        pestisida.setForeground(new java.awt.Color(0, 0, 0));
+        pestisida.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        pestisida.setText("0");
+        add(pestisida, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 20, 40, 30));
+
+        uang.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
+        uang.setForeground(new java.awt.Color(0, 0, 0));
+        uang.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        uang.setText("0");
+        add(uang, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, 110, 30));
+
+        nilaipupuk.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk.setText("0");
+        add(nilaipupuk, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 390, 40, 20));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/background-kebutuhan.png"))); // NOI18N
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, -1, -1));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/lahan/lahan-background.png"))); // NOI18N
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void kayuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kayuActionPerformed
+        // kayu
+        invKayu invKayu = new invKayu();
+        invKayu.setVisible(true);
+    }//GEN-LAST:event_kayuActionPerformed
+
+    private void pupukminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupukminActionPerformed
+        //kurang pupuk
+        int npupuk = Integer.valueOf(nilaipupuk.getText());
+        if (npupuk <= 0) {
+            npupuk = 0;
+            nilaipupuk.setText(String.valueOf(npupuk));
+        } else {
+            npupuk -= 1;
+            nilaipupuk.setText(String.valueOf(npupuk));
+        }
+    }//GEN-LAST:event_pupukminActionPerformed
+
+    private void pupukplusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupukplusActionPerformed
+        //tambah pupuk
+        int npupuk = Integer.valueOf(nilaipupuk.getText());
+        if (npupuk >= 100) {
+            npupuk = 100;
+            nilaipupuk.setText(String.valueOf(npupuk));
+        } else {
+            npupuk += 1;
+            nilaipupuk.setText(String.valueOf(npupuk));
+        }
+    }//GEN-LAST:event_pupukplusActionPerformed
+
+    private void pupukbeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupukbeliActionPerformed
+        // beli pupuk
+    }//GEN-LAST:event_pupukbeliActionPerformed
+
+    private void pestminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pestminActionPerformed
+        // kurang pestisida
+        int npest = Integer.valueOf(nilaipest.getText());
+        if (npest <= 0) {
+            npest = 0;
+            nilaipest.setText(String.valueOf(npest));
+        } else {
+            npest -= 1;
+            nilaipest.setText(String.valueOf(npest));
+        }
+    }//GEN-LAST:event_pestminActionPerformed
+
+    private void pestplusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pestplusActionPerformed
+        // tambah pestisida
+        int npest = Integer.valueOf(nilaipest.getText());
+        if (npest >= 100) {
+            npest = 100;
+            nilaipest.setText(String.valueOf(npest));
+        } else {
+            npest += 1;
+            nilaipest.setText(String.valueOf(npest));
+        }
+    }//GEN-LAST:event_pestplusActionPerformed
+
+    private void pestbeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pestbeliActionPerformed
+        // beli pestisida
+    }//GEN-LAST:event_pestbeliActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JButton kayu;
+    private javax.swing.JLabel ndamar;
+    private javax.swing.JLabel ngaharu;
+    private javax.swing.JLabel nilaipest;
+    private javax.swing.JLabel nilaipupuk;
+    private javax.swing.JLabel njati;
+    private javax.swing.JLabel nmahoni;
+    private javax.swing.JButton pestbeli;
+    private javax.swing.JLabel pestisida;
+    private javax.swing.JButton pestmin;
+    private javax.swing.JButton pestplus;
+    private javax.swing.JLabel pupuk;
+    private javax.swing.JButton pupukbeli;
+    private javax.swing.JButton pupukmin;
+    private javax.swing.JButton pupukplus;
+    private javax.swing.JLabel uang;
     // End of variables declaration//GEN-END:variables
 }

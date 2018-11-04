@@ -5,8 +5,16 @@
  */
 package main;
 
+
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -16,23 +24,42 @@ import javax.swing.JOptionPane;
  * @author Rex1054
  */
 public class lahan extends javax.swing.JPanel {
-
+    Connection con;
+    Statement stm;
+    ResultSet rs;
+    String sql;
+    
     Random random = new Random();
-    boolean statusLahan = false;
-    int jenisPohon;
-    int statusAir;
-    int umurPohon;
-    int maxUmur;
+    boolean[] statusLahan = {false, false, false, false, false, false, false, false, false, false,
+         false, false, false, false, false, false};
+    int[] jenisPohon = new int[16];
+    int[] statusAir = new int[16];
+    int[] umurPohon = new int[16];
+    int[] maxUmur = new int[16];
     int hari;
-    int tanamke = 0;
 
     /**
      * Creates new form lahan
      */
     public lahan() {
         initComponents();
-        hari = 1;
+        
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        try {
+        sql = "SELECT * FROM `hari` order by `id` desc";
+        rs = stm.executeQuery(sql);
+            if (rs.next()) {
+                
+        hari = rs.getShort("id");
         day.setText(String.valueOf(hari));
+        
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error LH01: gagal konek db");
+        }
     }
 
     /**
@@ -45,65 +72,26 @@ public class lahan extends javax.swing.JPanel {
     private void initComponents() {
 
         pilihan = new javax.swing.JButton();
-        f16 = new javax.swing.JLabel();
-        f15 = new javax.swing.JLabel();
-        f14 = new javax.swing.JLabel();
-        f13 = new javax.swing.JLabel();
-        f12 = new javax.swing.JLabel();
-        f11 = new javax.swing.JLabel();
-        f10 = new javax.swing.JLabel();
-        f09 = new javax.swing.JLabel();
-        f08 = new javax.swing.JLabel();
-        f07 = new javax.swing.JLabel();
-        f06 = new javax.swing.JLabel();
-        f05 = new javax.swing.JLabel();
-        f04 = new javax.swing.JLabel();
-        f03 = new javax.swing.JLabel();
-        f02 = new javax.swing.JLabel();
-        f01 = new javax.swing.JLabel();
-        s16 = new javax.swing.JLabel();
-        s15 = new javax.swing.JLabel();
-        s14 = new javax.swing.JLabel();
-        s13 = new javax.swing.JLabel();
-        s12 = new javax.swing.JLabel();
-        s11 = new javax.swing.JLabel();
-        s10 = new javax.swing.JLabel();
-        s9 = new javax.swing.JLabel();
-        s8 = new javax.swing.JLabel();
-        s7 = new javax.swing.JLabel();
-        s6 = new javax.swing.JLabel();
-        s5 = new javax.swing.JLabel();
-        s4 = new javax.swing.JLabel();
-        s3 = new javax.swing.JLabel();
-        s2 = new javax.swing.JLabel();
-        s1 = new javax.swing.JLabel();
-        t16 = new javax.swing.JLabel();
-        t15 = new javax.swing.JLabel();
-        t14 = new javax.swing.JLabel();
-        t13 = new javax.swing.JLabel();
-        t12 = new javax.swing.JLabel();
-        t11 = new javax.swing.JLabel();
-        t10 = new javax.swing.JLabel();
-        t9 = new javax.swing.JLabel();
-        t8 = new javax.swing.JLabel();
-        t7 = new javax.swing.JLabel();
-        t6 = new javax.swing.JLabel();
-        t5 = new javax.swing.JLabel();
-        t4 = new javax.swing.JLabel();
-        t3 = new javax.swing.JLabel();
-        t2 = new javax.swing.JLabel();
-        t1 = new javax.swing.JLabel();
         nextDay = new javax.swing.JButton();
-        umur = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         day = new javax.swing.JLabel();
-        jenis = new javax.swing.JLabel();
-        air = new javax.swing.JLabel();
-        tanamanke = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        ph16 = new javax.swing.JButton();
+        ph15 = new javax.swing.JButton();
+        ph14 = new javax.swing.JButton();
+        ph13 = new javax.swing.JButton();
+        ph12 = new javax.swing.JButton();
+        ph11 = new javax.swing.JButton();
+        ph10 = new javax.swing.JButton();
+        ph9 = new javax.swing.JButton();
+        ph8 = new javax.swing.JButton();
+        ph7 = new javax.swing.JButton();
+        ph6 = new javax.swing.JButton();
+        ph5 = new javax.swing.JButton();
+        ph4 = new javax.swing.JButton();
+        ph3 = new javax.swing.JButton();
+        ph2 = new javax.swing.JButton();
+        ph1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         field = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(845, 661));
@@ -118,57 +106,7 @@ public class lahan extends javax.swing.JPanel {
                 pilihanActionPerformed(evt);
             }
         });
-        add(pilihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 600, 280));
-        add(f16, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 210, -1, -1));
-        add(f15, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 260, -1, -1));
-        add(f14, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 310, -1, -1));
-        add(f13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, -1, -1));
-        add(f12, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 160, -1, -1));
-        add(f11, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, -1, -1));
-        add(f10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 260, -1, -1));
-        add(f09, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 310, -1, -1));
-        add(f08, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, -1, -1));
-        add(f07, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, -1, -1));
-        add(f06, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, -1, -1));
-        add(f05, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, -1, -1));
-        add(f04, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, -1, -1));
-        add(f03, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, -1, -1));
-        add(f02, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, -1, -1));
-
-        f01.setToolTipText("");
-        add(f01, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, -1));
-        add(s16, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 300, -1, -1));
-        add(s15, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 350, -1, -1));
-        add(s14, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 400, -1, -1));
-        add(s13, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 450, -1, -1));
-        add(s12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, -1, -1));
-        add(s11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 300, -1, -1));
-        add(s10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, -1, -1));
-        add(s9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 400, -1, -1));
-        add(s8, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 200, -1, -1));
-        add(s7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 250, -1, -1));
-        add(s6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 300, -1, -1));
-        add(s5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, -1, -1));
-        add(s4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, -1, -1));
-        add(s3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, -1, -1));
-        add(s2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, -1, -1));
-        add(s1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, -1, -1));
-        add(t16, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 320, -1, -1));
-        add(t15, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 370, -1, -1));
-        add(t14, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 420, -1, -1));
-        add(t13, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 470, -1, -1));
-        add(t12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 270, -1, -1));
-        add(t11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 320, -1, -1));
-        add(t10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 370, -1, -1));
-        add(t9, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 420, -1, -1));
-        add(t8, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, -1, -1));
-        add(t7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 270, -1, -1));
-        add(t6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 320, -1, -1));
-        add(t5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 370, -1, -1));
-        add(t4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 170, -1, -1));
-        add(t3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, -1, -1));
-        add(t2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, -1, -1));
-        add(t1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, -1, -1));
+        add(pilihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 470, 80, 30));
 
         nextDay.setText("Ganti Hari");
         nextDay.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -179,355 +117,2023 @@ public class lahan extends javax.swing.JPanel {
         });
         add(nextDay, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 560, -1, -1));
 
-        umur.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        umur.setForeground(new java.awt.Color(0, 0, 0));
-        umur.setText("umur");
-        add(umur, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
-
         jLabel2.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Hari ke");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
-
-        jLabel3.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Jenis Pohon");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("Status Air");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Umur");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
 
         day.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
         day.setForeground(new java.awt.Color(0, 0, 0));
         day.setText("hari");
         add(day, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
-        jenis.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        jenis.setForeground(new java.awt.Color(0, 0, 0));
-        jenis.setText("jenis");
-        add(jenis, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, -1, -1));
+        ph16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph16.setBorderPainted(false);
+        ph16.setContentAreaFilled(false);
+        ph16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph16.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph16.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph16.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph16.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph16.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph16MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph16MouseExited(evt);
+            }
+        });
+        ph16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph16ActionPerformed(evt);
+            }
+        });
+        add(ph16, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 260, 60, 100));
 
-        air.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        air.setForeground(new java.awt.Color(0, 0, 0));
-        air.setText("air");
-        add(air, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, -1, -1));
+        ph15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph15.setBorderPainted(false);
+        ph15.setContentAreaFilled(false);
+        ph15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph15.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph15.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph15.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph15.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph15.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph15MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph15MouseExited(evt);
+            }
+        });
+        ph15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph15ActionPerformed(evt);
+            }
+        });
+        add(ph15, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 300, 60, 100));
 
-        tanamanke.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        tanamanke.setForeground(new java.awt.Color(0, 0, 0));
-        tanamanke.setText("0");
-        add(tanamanke, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
+        ph14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph14.setBorderPainted(false);
+        ph14.setContentAreaFilled(false);
+        ph14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph14.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph14.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph14.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph14.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph14.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph14MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph14MouseExited(evt);
+            }
+        });
+        ph14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph14ActionPerformed(evt);
+            }
+        });
+        add(ph14, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 330, 60, 100));
 
-        jLabel7.setFont(new java.awt.Font("Game Sans Serif 7", 1, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("Tanam ke");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 20, -1, -1));
+        ph13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph13.setBorderPainted(false);
+        ph13.setContentAreaFilled(false);
+        ph13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph13.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph13.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph13.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph13.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph13.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph13MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph13MouseExited(evt);
+            }
+        });
+        ph13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph13ActionPerformed(evt);
+            }
+        });
+        add(ph13, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 370, 60, 100));
 
-        field.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/lahan1.png"))); // NOI18N
+        ph12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph12.setBorderPainted(false);
+        ph12.setContentAreaFilled(false);
+        ph12.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph12.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph12.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph12.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph12.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph12.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph12MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph12MouseExited(evt);
+            }
+        });
+        ph12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph12ActionPerformed(evt);
+            }
+        });
+        add(ph12, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 225, 60, 100));
+
+        ph11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph11.setBorderPainted(false);
+        ph11.setContentAreaFilled(false);
+        ph11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph11.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph11.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph11.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph11.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph11MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph11MouseExited(evt);
+            }
+        });
+        ph11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph11ActionPerformed(evt);
+            }
+        });
+        add(ph11, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 260, 60, 100));
+
+        ph10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph10.setBorderPainted(false);
+        ph10.setContentAreaFilled(false);
+        ph10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph10.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph10.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph10.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph10.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph10MouseExited(evt);
+            }
+        });
+        ph10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph10ActionPerformed(evt);
+            }
+        });
+        add(ph10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 300, 60, 100));
+
+        ph9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph9.setBorderPainted(false);
+        ph9.setContentAreaFilled(false);
+        ph9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph9.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph9.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph9.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph9.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph9MouseExited(evt);
+            }
+        });
+        ph9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph9ActionPerformed(evt);
+            }
+        });
+        add(ph9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 335, 60, 100));
+
+        ph8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph8.setBorderPainted(false);
+        ph8.setContentAreaFilled(false);
+        ph8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph8.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph8.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph8.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph8.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph8MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph8MouseExited(evt);
+            }
+        });
+        ph8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph8ActionPerformed(evt);
+            }
+        });
+        add(ph8, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 180, 60, 100));
+
+        ph7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph7.setBorderPainted(false);
+        ph7.setContentAreaFilled(false);
+        ph7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph7.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph7.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph7.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph7.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph7MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph7MouseExited(evt);
+            }
+        });
+        ph7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph7ActionPerformed(evt);
+            }
+        });
+        add(ph7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 220, 60, 100));
+
+        ph6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph6.setBorderPainted(false);
+        ph6.setContentAreaFilled(false);
+        ph6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph6.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph6.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph6.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph6.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph6MouseExited(evt);
+            }
+        });
+        ph6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph6ActionPerformed(evt);
+            }
+        });
+        add(ph6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 60, 100));
+
+        ph5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph5.setBorderPainted(false);
+        ph5.setContentAreaFilled(false);
+        ph5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph5.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph5.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph5.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph5MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph5MouseExited(evt);
+            }
+        });
+        ph5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph5ActionPerformed(evt);
+            }
+        });
+        add(ph5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 300, 60, 100));
+
+        ph4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph4.setBorderPainted(false);
+        ph4.setContentAreaFilled(false);
+        ph4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph4.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph4.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph4.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph4.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph4MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph4MouseExited(evt);
+            }
+        });
+        ph4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph4ActionPerformed(evt);
+            }
+        });
+        add(ph4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 147, 60, 100));
+
+        ph3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph3.setBorderPainted(false);
+        ph3.setContentAreaFilled(false);
+        ph3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph3.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph3.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph3.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph3.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph3MouseExited(evt);
+            }
+        });
+        ph3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph3ActionPerformed(evt);
+            }
+        });
+        add(ph3, new org.netbeans.lib.awtextra.AbsoluteConstraints(305, 185, 60, 100));
+
+        ph2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph2.setBorderPainted(false);
+        ph2.setContentAreaFilled(false);
+        ph2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph2.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph2.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph2.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph2MouseExited(evt);
+            }
+        });
+        ph2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph2ActionPerformed(evt);
+            }
+        });
+        add(ph2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 222, 60, 100));
+
+        ph1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        ph1.setBorderPainted(false);
+        ph1.setContentAreaFilled(false);
+        ph1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ph1.setMaximumSize(new java.awt.Dimension(65, 101));
+        ph1.setMinimumSize(new java.awt.Dimension(65, 101));
+        ph1.setPreferredSize(new java.awt.Dimension(65, 101));
+        ph1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        ph1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ph1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ph1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ph1MouseExited(evt);
+            }
+        });
+        ph1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ph1ActionPerformed(evt);
+            }
+        });
+        add(ph1, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 260, 60, 100));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/lahan/lahan1.png"))); // NOI18N
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, -1));
+
+        field.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/lahan/lahan-background.png"))); // NOI18N
         add(field, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void pilihanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pilihanActionPerformed
         // Lahan Klik
-        JOptionPane pane = new JOptionPane("");
-        Object[] options = new String[]{"Tanam", "Siram", "Panen", "Bersihkan", "Batal"};
-        pane.setOptions(options);
-        JDialog dialog = pane.createDialog(new JFrame(), "Pilihan");
-        dialog.show();
-        Object obj = pane.getValue();
-        if (obj.equals("Tanam")) {
-            if (statusLahan == true) {
-                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
-                JOptionPane.showMessageDialog(null, "Gagal menanam!");
-            } else {
-                JOptionPane pane2 = new JOptionPane("");
-                Object[] options2 = new String[]{"Pohon1", "Pohon2", "Pohon3", "Pohon4", "Batal"};
-                pane2.setOptions(options2);
-                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
-                dialog2.show();
-                Object obj2 = pane2.getValue();
-                if (obj2.equals("Pohon1")) {
-                    tanamke += 1;
-                    statusLahan = true;
-                    jenisPohon = 1;
-                    statusAir = 50;
-                    umurPohon = 1;
-                    maxUmur = 7;
-                    tanamanke.setText(String.valueOf(tanamke));
-                    jenis.setText("Pohon 1");
-                    air.setText(String.valueOf(statusAir));
-                    umur.setText(String.valueOf(umurPohon));
-                    f01.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f02.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f03.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f04.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f05.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f06.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f07.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f08.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f09.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    f16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon1.png")));
-                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
-                } else if (obj2.equals("Pohon2")) {
-                    tanamke += 1;
-                    statusLahan = true;
-                    jenisPohon = 2;
-                    statusAir = 50;
-                    umurPohon = 1;
-                    maxUmur = 10;
-                    jenis.setText("Pohon 2");
-                    tanamanke.setText(String.valueOf(tanamke));
-                    air.setText(String.valueOf(statusAir));
-                    umur.setText(String.valueOf(umurPohon));
-                    f01.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f02.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f03.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f04.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f05.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f06.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f07.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f08.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f09.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    f16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon2.png")));
-                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
-                } else if (obj2.equals("Pohon3")) {
-                    tanamke += 1;
-                    statusLahan = true;
-                    jenisPohon = 3;
-                    statusAir = 50;
-                    umurPohon = 1;
-                    maxUmur = 15;
-                    jenis.setText("Pohon 3");
-                    tanamanke.setText(String.valueOf(tanamke));
-                    air.setText(String.valueOf(statusAir));
-                    umur.setText(String.valueOf(umurPohon));
-                    f01.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f02.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f03.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f04.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f05.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f06.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f07.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f08.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f09.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    f16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon3.png")));
-                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
-                } else if (obj2.equals("Pohon4")) {
-                    tanamke += 1;
-                    statusLahan = true;
-                    jenisPohon = 4;
-                    statusAir = 50;
-                    umurPohon = 1;
-                    maxUmur = 25;
-                    jenis.setText("Pohon 4");
-                    tanamanke.setText(String.valueOf(tanamke));
-                    air.setText(String.valueOf(statusAir));
-                    umur.setText(String.valueOf(umurPohon));
-                    f01.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f02.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f03.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f04.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f05.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f06.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f07.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f08.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f09.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    f16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon4.png")));
-                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
-                }
-            }
-        } else if (obj.equals("Siram")) {
-            if (statusLahan == false) {
-                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
-            } else if (statusAir == 100) {
-                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
-            } else {
-                statusAir += 25;
-                if (statusAir >= 100) {
-                    statusAir = 100;
-                }
-                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
-                air.setText(String.valueOf(statusAir));
-            }
-        } else if (obj.equals("Panen")) {
-            if (statusLahan == false) {
-                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
-            } else
-            if (umurPohon >= maxUmur) {
-                f01.setIcon(null);
-                f02.setIcon(null);
-                f03.setIcon(null);
-                f04.setIcon(null);
-                f05.setIcon(null);
-                f06.setIcon(null);
-                f07.setIcon(null);
-                f08.setIcon(null);
-                f09.setIcon(null);
-                f10.setIcon(null);
-                f11.setIcon(null);
-                f12.setIcon(null);
-                f13.setIcon(null);
-                f14.setIcon(null);
-                f15.setIcon(null);
-                f16.setIcon(null);
-                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
-                        + "Hasil panen dimasukkan ke dalam inventori");
-                jenisPohon = 0;
-                jenis.setText("tidak ada");
-                air.setText("0");
-                umur.setText("0");
-                t1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-                t16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/trunk2.png")));
-            }
-        } else if (obj.equals("Bersihkan")) {
-            t1.setIcon(null);
-            t2.setIcon(null);
-            t3.setIcon(null);
-            t4.setIcon(null);
-            t5.setIcon(null);
-            t6.setIcon(null);
-            t7.setIcon(null);
-            t8.setIcon(null);
-            t9.setIcon(null);
-            t10.setIcon(null);
-            t11.setIcon(null);
-            t12.setIcon(null);
-            t13.setIcon(null);
-            t14.setIcon(null);
-            t15.setIcon(null);
-            t16.setIcon(null);
-            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
-                    + "siap untuk ditanam kembali");
-            statusLahan = false;
-        }
     }//GEN-LAST:event_pilihanActionPerformed
 
     private void nextDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextDayActionPerformed
         // Ganti Hari
-        if (jenisPohon == 0) {
-            JOptionPane.showMessageDialog(null, "Silahkan melakukan pembersihan lahan!");
-        } else {
-            hari += 1;
+        hari += 1;
             day.setText(String.valueOf(hari));
-            statusAir -= 20;
-            air.setText(String.valueOf(statusAir));
-            umurPohon += 1;
-            umur.setText(String.valueOf(umurPohon));
-            if (statusAir <= 20) {
-                JOptionPane.showMessageDialog(null, "Pohon kekeringan, silahkan melakukan penyiraman!");
-            }
-            if (umurPohon >= maxUmur) {
-                JOptionPane.showMessageDialog(null, "Umur pohon sudah mencukupi untuk dilakukan penebangan!");
-            }
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        try {
+        sql = "INSERT INTO `hari`(`id`) VALUES (default)";
+        stm.execute(sql);
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error LH02: gagal konek db");
         }
     }//GEN-LAST:event_nextDayActionPerformed
 
+    private void ph1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph1ActionPerformed
+        // ph1
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan 1");
+        dialog.show();
+        Object obj = pane.getValue();
+        
+        if (obj.equals("Tanam")) {
+            if (statusLahan[0] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[0] = 1;
+                    statusAir[0] = 100;
+                    statusLahan[0] = true;
+                    umurPohon[0] = 1;
+                    maxUmur[0] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[0] = 2;
+                    statusAir[0] = 100;
+                    statusLahan[0] = true;
+                    umurPohon[0] = 1;
+                    maxUmur[0] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[0] = 3;
+                    statusAir[0] = 100;
+                    statusLahan[0] = true;
+                    umurPohon[0] = 1;
+                    maxUmur[0] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[0] = 4;
+                    statusAir[0] = 100;
+                    statusLahan[0] = true;
+                    umurPohon[0] = 1;
+                    maxUmur[0] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } 
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[0] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[0] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[0] += 25;
+                if (statusAir[0] >= 100) {
+                    statusAir[0] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[0] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[0] >= maxUmur[0]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[0] = 0;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph1.setIcon(null);
+            statusLahan[0] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[0]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[0]+"\n"
+                            + "Status Air : "+statusAir[0]+"\n"
+                            + "Umur Pohon : "+umurPohon[0]+"\n"
+                            + "Umur Maksimal : "+maxUmur[0]);
+                }
+    }//GEN-LAST:event_ph1ActionPerformed
+
+    //PH Enter
+    private void ph1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph1MouseEntered
+        ph1.setBorderPainted(true);
+    }//GEN-LAST:event_ph1MouseEntered
+
+    private void ph2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph2MouseEntered
+        ph2.setBorderPainted(true);
+    }//GEN-LAST:event_ph2MouseEntered
+
+    private void ph3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph3MouseEntered
+        ph3.setBorderPainted(true);
+    }//GEN-LAST:event_ph3MouseEntered
+
+    private void ph4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph4MouseEntered
+        ph4.setBorderPainted(true);
+    }//GEN-LAST:event_ph4MouseEntered
+
+    private void ph5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph5MouseEntered
+        ph5.setBorderPainted(true);
+    }//GEN-LAST:event_ph5MouseEntered
+
+    private void ph6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph6MouseEntered
+        ph6.setBorderPainted(true);
+    }//GEN-LAST:event_ph6MouseEntered
+
+    private void ph7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph7MouseEntered
+        ph7.setBorderPainted(true);
+    }//GEN-LAST:event_ph7MouseEntered
+
+    private void ph8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph8MouseEntered
+        ph8.setBorderPainted(true);
+    }//GEN-LAST:event_ph8MouseEntered
+
+    private void ph9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph9MouseEntered
+        ph9.setBorderPainted(true);
+    }//GEN-LAST:event_ph9MouseEntered
+
+    private void ph10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph10MouseEntered
+        ph10.setBorderPainted(true);
+    }//GEN-LAST:event_ph10MouseEntered
+
+    private void ph11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph11MouseEntered
+        ph11.setBorderPainted(true);
+    }//GEN-LAST:event_ph11MouseEntered
+
+    private void ph12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph12MouseEntered
+        ph12.setBorderPainted(true);
+    }//GEN-LAST:event_ph12MouseEntered
+
+    private void ph13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph13MouseEntered
+        ph13.setBorderPainted(true);
+    }//GEN-LAST:event_ph13MouseEntered
+
+    private void ph14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph14MouseEntered
+        ph14.setBorderPainted(true);
+    }//GEN-LAST:event_ph14MouseEntered
+
+    private void ph15MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph15MouseEntered
+        ph15.setBorderPainted(true);
+    }//GEN-LAST:event_ph15MouseEntered
+
+    private void ph16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph16MouseEntered
+        ph16.setBorderPainted(true);
+    }//GEN-LAST:event_ph16MouseEntered
+
+    //PH Exit
+    private void ph1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph1MouseExited
+        ph1.setBorderPainted(false);
+    }//GEN-LAST:event_ph1MouseExited
+
+    private void ph2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph2MouseExited
+        ph2.setBorderPainted(false);
+    }//GEN-LAST:event_ph2MouseExited
+
+    private void ph3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph3MouseExited
+        ph3.setBorderPainted(false);
+    }//GEN-LAST:event_ph3MouseExited
+
+    private void ph4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph4MouseExited
+        ph4.setBorderPainted(false);
+    }//GEN-LAST:event_ph4MouseExited
+
+    private void ph5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph5MouseExited
+        ph5.setBorderPainted(false);
+    }//GEN-LAST:event_ph5MouseExited
+
+    private void ph6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph6MouseExited
+        ph6.setBorderPainted(false);
+    }//GEN-LAST:event_ph6MouseExited
+
+    private void ph7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph7MouseExited
+        ph7.setBorderPainted(false);
+    }//GEN-LAST:event_ph7MouseExited
+
+    private void ph8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph8MouseExited
+        ph8.setBorderPainted(false);
+    }//GEN-LAST:event_ph8MouseExited
+
+    private void ph9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph9MouseExited
+        ph9.setBorderPainted(false);
+    }//GEN-LAST:event_ph9MouseExited
+
+    private void ph10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph10MouseExited
+        ph10.setBorderPainted(false);
+    }//GEN-LAST:event_ph10MouseExited
+
+    private void ph11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph11MouseExited
+        ph11.setBorderPainted(false);
+    }//GEN-LAST:event_ph11MouseExited
+
+    private void ph12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph12MouseExited
+        ph12.setBorderPainted(false);
+    }//GEN-LAST:event_ph12MouseExited
+
+    private void ph13MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph13MouseExited
+        ph13.setBorderPainted(false);
+    }//GEN-LAST:event_ph13MouseExited
+
+    private void ph14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph14MouseExited
+        ph14.setBorderPainted(false);
+    }//GEN-LAST:event_ph14MouseExited
+
+    private void ph15MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph15MouseExited
+        ph15.setBorderPainted(false);
+    }//GEN-LAST:event_ph15MouseExited
+
+    private void ph16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ph16MouseExited
+        ph16.setBorderPainted(false);
+    }//GEN-LAST:event_ph16MouseExited
+
+    //PH Clicked
+    private void ph2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph2ActionPerformed
+        // ph2
+        int arr = 1;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan 2");
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph2.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph2ActionPerformed
+
+    private void ph3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph3ActionPerformed
+        // ph3
+        int arr = 2;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan 3");
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph3.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph3ActionPerformed
+
+    private void ph4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph4ActionPerformed
+        // ph4
+        int arr = 3;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan 4");
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph4.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph4ActionPerformed
+
+    private void ph5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph5ActionPerformed
+        // ph5
+        int arr = 4;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph5.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph5ActionPerformed
+
+    private void ph6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph6ActionPerformed
+        // ph6
+        int arr = 5;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph6.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph6ActionPerformed
+
+    private void ph7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph7ActionPerformed
+        // ph7
+        int arr = 6;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph7.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph7ActionPerformed
+
+    private void ph8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph8ActionPerformed
+        // ph8
+        int arr = 7;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph8.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph8ActionPerformed
+
+    private void ph9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph9ActionPerformed
+        // ph9
+        int arr = 8;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph9.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph9ActionPerformed
+
+    private void ph10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph10ActionPerformed
+        // ph10
+        int arr = 9;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph10.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph10ActionPerformed
+
+    private void ph11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph11ActionPerformed
+        // ph11
+        int arr = 10;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph11.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph11ActionPerformed
+
+    private void ph12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph12ActionPerformed
+        // ph12
+        int arr = 11;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph12.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph12ActionPerformed
+
+    private void ph13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph13ActionPerformed
+        // ph13
+        int arr = 12;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph13.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph13ActionPerformed
+
+    private void ph14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph14ActionPerformed
+        // ph14
+        int arr = 13;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph14.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph14ActionPerformed
+
+    private void ph15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph15ActionPerformed
+        // ph15
+        int arr = 14;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph15.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph15ActionPerformed
+
+    private void ph16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ph16ActionPerformed
+        // ph16
+        int arr = 15;
+        JOptionPane pane = new JOptionPane("");
+        Object[] options = new String[]{"Tanam", "Siram", "Pupuk", "Panen", "Bersihkan", "Status", "Batal"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Lahan "+(arr+1));
+        dialog.show();
+        Object obj = pane.getValue();
+        if (obj.equals("Tanam")) {
+            if (statusLahan[arr] == true) {
+                JOptionPane.showMessageDialog(null, "Lahan sudah ditanami!");
+                JOptionPane.showMessageDialog(null, "Gagal menanam!");
+            } else {
+                JOptionPane pane2 = new JOptionPane("");
+                Object[] options2 = new String[]{"Damar", "Gaharu", "Jati", "Mahoni"};
+                pane2.setOptions(options2);
+                JDialog dialog2 = pane2.createDialog(new JFrame(), "Pohon");
+                dialog2.show();
+                Object obj2 = pane2.getValue();
+                if (obj2.equals("Damar")) {
+                    ph16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/damar1.png")));
+                    jenisPohon[arr] = 1;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Gaharu")) {
+                    ph16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/gaharu1.png")));
+                    jenisPohon[arr] = 2;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Jati")) {
+                    ph16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/jati1.png")));
+                    jenisPohon[arr] = 3;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                } else if (obj2.equals("Mahoni")) {
+                    ph16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/pohon/mahoni1.png")));
+                    jenisPohon[arr] = 4;
+                    statusAir[arr] = 100;
+                    statusLahan[arr] = true;
+                    umurPohon[arr] = 1;
+                    maxUmur[arr] = 15;
+                    JOptionPane.showMessageDialog(null, "Berhasil menanam!");
+                }
+            }
+        } else if (obj.equals("Siram")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan penanaman terlebih dahulu");
+            } else if (statusAir[arr] == 100) {
+                JOptionPane.showMessageDialog(null, "Pohon masih segar, siram lagi di lain hari!");
+            } else {
+                statusAir[arr] += 25;
+                if (statusAir[arr] >= 100) {
+                    statusAir[arr] = 100;
+                }
+                JOptionPane.showMessageDialog(null, "Penyiraman berhasil!");
+            }
+        } else if (obj.equals("Panen")) {
+            if (statusLahan[arr] == false) {
+                JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
+            } else if (umurPohon[arr] >= maxUmur[arr]) {
+
+                JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
+                        + "Hasil panen dimasukkan ke dalam inventori");
+                jenisPohon[arr] = arr;
+
+            }
+        } else if (obj.equals("Bersihkan")) {
+
+            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
+                    + "siap untuk ditanam kembali");
+            ph16.setIcon(null);
+            statusLahan[arr] = false;
+        } else if (obj.equals("Status")){
+                    JOptionPane.showMessageDialog(null, "Status Lahan : "+statusLahan[arr]+"\n"
+                            + "Jenis Pohon : "+jenisPohon[arr]+"\n"
+                            + "Status Air : "+statusAir[arr]+"\n"
+                            + "Umur Pohon : "+umurPohon[arr]+"\n"
+                            + "Umur Maksimal : "+maxUmur[arr]);
+                }
+    }//GEN-LAST:event_ph16ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel air;
     private javax.swing.JLabel day;
-    private javax.swing.JLabel f01;
-    private javax.swing.JLabel f02;
-    private javax.swing.JLabel f03;
-    private javax.swing.JLabel f04;
-    private javax.swing.JLabel f05;
-    private javax.swing.JLabel f06;
-    private javax.swing.JLabel f07;
-    private javax.swing.JLabel f08;
-    private javax.swing.JLabel f09;
-    private javax.swing.JLabel f10;
-    private javax.swing.JLabel f11;
-    private javax.swing.JLabel f12;
-    private javax.swing.JLabel f13;
-    private javax.swing.JLabel f14;
-    private javax.swing.JLabel f15;
-    private javax.swing.JLabel f16;
     private javax.swing.JLabel field;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jenis;
     private javax.swing.JButton nextDay;
+    private javax.swing.JButton ph1;
+    private javax.swing.JButton ph10;
+    private javax.swing.JButton ph11;
+    private javax.swing.JButton ph12;
+    private javax.swing.JButton ph13;
+    private javax.swing.JButton ph14;
+    private javax.swing.JButton ph15;
+    private javax.swing.JButton ph16;
+    private javax.swing.JButton ph2;
+    private javax.swing.JButton ph3;
+    private javax.swing.JButton ph4;
+    private javax.swing.JButton ph5;
+    private javax.swing.JButton ph6;
+    private javax.swing.JButton ph7;
+    private javax.swing.JButton ph8;
+    private javax.swing.JButton ph9;
     private javax.swing.JButton pilihan;
-    private javax.swing.JLabel s1;
-    private javax.swing.JLabel s10;
-    private javax.swing.JLabel s11;
-    private javax.swing.JLabel s12;
-    private javax.swing.JLabel s13;
-    private javax.swing.JLabel s14;
-    private javax.swing.JLabel s15;
-    private javax.swing.JLabel s16;
-    private javax.swing.JLabel s2;
-    private javax.swing.JLabel s3;
-    private javax.swing.JLabel s4;
-    private javax.swing.JLabel s5;
-    private javax.swing.JLabel s6;
-    private javax.swing.JLabel s7;
-    private javax.swing.JLabel s8;
-    private javax.swing.JLabel s9;
-    private javax.swing.JLabel t1;
-    private javax.swing.JLabel t10;
-    private javax.swing.JLabel t11;
-    private javax.swing.JLabel t12;
-    private javax.swing.JLabel t13;
-    private javax.swing.JLabel t14;
-    private javax.swing.JLabel t15;
-    private javax.swing.JLabel t16;
-    private javax.swing.JLabel t2;
-    private javax.swing.JLabel t3;
-    private javax.swing.JLabel t4;
-    private javax.swing.JLabel t5;
-    private javax.swing.JLabel t6;
-    private javax.swing.JLabel t7;
-    private javax.swing.JLabel t8;
-    private javax.swing.JLabel t9;
-    private javax.swing.JLabel tanamanke;
-    private javax.swing.JLabel umur;
     // End of variables declaration//GEN-END:variables
 }

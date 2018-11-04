@@ -37,9 +37,6 @@ public class main extends javax.swing.JFrame {
         exit = new javax.swing.JButton();
         about = new javax.swing.JButton();
         play = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -49,6 +46,7 @@ public class main extends javax.swing.JFrame {
         Container.setPreferredSize(new java.awt.Dimension(1024, 768));
         Container.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/bt-keluar.png"))); // NOI18N
         exit.setBorderPainted(false);
         exit.setContentAreaFilled(false);
         exit.addActionListener(new java.awt.event.ActionListener() {
@@ -58,6 +56,7 @@ public class main extends javax.swing.JFrame {
         });
         Container.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 400, 180, 40));
 
+        about.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/bt-tentang.png"))); // NOI18N
         about.setBorderPainted(false);
         about.setContentAreaFilled(false);
         about.addActionListener(new java.awt.event.ActionListener() {
@@ -67,6 +66,7 @@ public class main extends javax.swing.JFrame {
         });
         Container.add(about, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, 180, 40));
 
+        play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/bt-mulai.png"))); // NOI18N
         play.setBorderPainted(false);
         play.setContentAreaFilled(false);
         play.addActionListener(new java.awt.event.ActionListener() {
@@ -76,16 +76,7 @@ public class main extends javax.swing.JFrame {
         });
         Container.add(play, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 260, 180, 40));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Bt-Mulai.png"))); // NOI18N
-        Container.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, -1, -1));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Bt-Tentang.png"))); // NOI18N
-        Container.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, -1, -1));
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Bt-Keluar.png"))); // NOI18N
-        Container.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 390, -1, -1));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/Background 1.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/Background 1.png"))); // NOI18N
         jLabel1.setMaximumSize(new java.awt.Dimension(1024, 768));
         jLabel1.setMinimumSize(new java.awt.Dimension(1024, 768));
         jLabel1.setPreferredSize(new java.awt.Dimension(1024, 768));
@@ -179,9 +170,6 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JButton about;
     private javax.swing.JButton exit;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JButton play;
     // End of variables declaration//GEN-END:variables
 }
