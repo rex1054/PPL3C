@@ -5,17 +5,96 @@
  */
 package main;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Rex1054
  */
 public class inventori extends javax.swing.JPanel {
 
+    int npest, hpest, npupuk, hpupuk;
+    Connection con;
+    Statement stm;
+    PreparedStatement pst;
+    ResultSet rs;
+    String sql, sql1, sql2;
+    int uangTemp, pestTemp, pupukTemp;
+
     /**
      * Creates new form inventori
      */
     public inventori() {
         initComponents();
+
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        // ambil data inventori
+        // ambil data uang
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"uang\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                uangTemp = rs.getInt("jumlah");
+                uang.setText(String.valueOf(uangTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-1: gagal konek db");
+        }
+
+        // ambil data pestisida
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"pestisida\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                pestTemp = rs.getInt("jumlah");
+                pestisida.setText(String.valueOf(pestTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-2: gagal konek db");
+        }
+
+        // ambil data pupuk
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"pupuk\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                pupukTemp = rs.getInt("jumlah");
+                pupuk.setText(String.valueOf(pupukTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-3: gagal konek db");
+        }
+        
+        int dataBibit [] = new int [4];
+        int i = 0;
+        // ambil data bibit
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `id`>1 && `id` <6";
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                dataBibit[i]=rs.getInt("jumlah");
+                i++;
+            }
+            ndamar.setText(String.valueOf(dataBibit[0]));
+            ngaharu.setText(String.valueOf(dataBibit[1]));
+            njati.setText(String.valueOf(dataBibit[2]));
+            nmahoni.setText(String.valueOf(dataBibit[3]));
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-3: gagal konek db");
+        }
     }
 
     /**
@@ -47,6 +126,7 @@ public class inventori extends javax.swing.JPanel {
         pestisida = new javax.swing.JLabel();
         uang = new javax.swing.JLabel();
         nilaipupuk = new javax.swing.JLabel();
+        TombolRumah = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -194,6 +274,15 @@ public class inventori extends javax.swing.JPanel {
         nilaipupuk.setText("0");
         add(nilaipupuk, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 390, 40, 20));
 
+        TombolRumah.setBorderPainted(false);
+        TombolRumah.setContentAreaFilled(false);
+        TombolRumah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TombolRumahActionPerformed(evt);
+            }
+        });
+        add(TombolRumah, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 110, 90, 80));
+
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/background-kebutuhan.png"))); // NOI18N
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, -1, -1));
 
@@ -209,62 +298,203 @@ public class inventori extends javax.swing.JPanel {
 
     private void pupukminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupukminActionPerformed
         //kurang pupuk
-        int npupuk = Integer.valueOf(nilaipupuk.getText());
+        npupuk = Integer.valueOf(nilaipupuk.getText());
         if (npupuk <= 0) {
             npupuk = 0;
             nilaipupuk.setText(String.valueOf(npupuk));
+            hpupuk = npupuk * 300;
         } else {
             npupuk -= 1;
             nilaipupuk.setText(String.valueOf(npupuk));
+            hpupuk = npupuk * 300;
         }
     }//GEN-LAST:event_pupukminActionPerformed
 
     private void pupukplusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupukplusActionPerformed
         //tambah pupuk
-        int npupuk = Integer.valueOf(nilaipupuk.getText());
+        npupuk = Integer.valueOf(nilaipupuk.getText());
         if (npupuk >= 100) {
             npupuk = 100;
             nilaipupuk.setText(String.valueOf(npupuk));
+            hpupuk = npupuk * 300;
         } else {
             npupuk += 1;
             nilaipupuk.setText(String.valueOf(npupuk));
+            hpupuk = npupuk * 300;
         }
     }//GEN-LAST:event_pupukplusActionPerformed
 
     private void pupukbeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupukbeliActionPerformed
         // beli pupuk
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+
+        pupukTemp = pupukTemp + npupuk;
+
+        JOptionPane pane = new JOptionPane("Anda akan membeli " + npupuk + " pupuk seharga " + hpupuk);
+        Object[] options = new String[]{"Beli", "Tidak"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Beli Pupuk");
+        dialog.show();
+        Object obj = pane.getValue();
+
+        if (obj.equals("Beli")) {
+            if ((uangTemp - hpupuk) < 0) {
+                JOptionPane.showMessageDialog(null, "Uang anda tidak cukup!");
+            } else {
+                int duit = uangTemp - hpupuk;
+                try {
+                    sql1 = "UPDATE `inventori` SET `jumlah`=" + duit + " WHERE `barang` = \"uang\";";
+                    sql2 = "UPDATE `inventori` SET `jumlah`=" + pupukTemp + " WHERE `barang` = \"pupuk\";";
+                    System.out.println(duit);
+                    System.out.println(pupukTemp);
+                    pst = con.prepareStatement(sql1);
+                    pst.execute();
+                    pst.close();
+                    pst = con.prepareStatement(sql2);
+                    pst.execute();
+                    pst.close();
+                    JOptionPane.showMessageDialog(null, "Berhasil Membeli");
+
+                    //update uang
+                    try {
+                        sql = "SELECT * FROM `inventori` WHERE `barang` = \"uang\"";
+                        rs = stm.executeQuery(sql);
+                        if (rs.next()) {
+
+                            uangTemp = rs.getInt("jumlah");
+                            uang.setText(String.valueOf(uangTemp));
+                        }
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "error INV02-1: " + e);
+                    }
+
+                    //update pupuk
+                    try {
+                        sql = "SELECT * FROM `inventori` WHERE `barang` = \"pupuk\"";
+                        rs = stm.executeQuery(sql);
+                        if (rs.next()) {
+
+                            pupukTemp = rs.getInt("jumlah");
+                            pupuk.setText(String.valueOf(pupukTemp));
+                        }
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "error INV02-3: " + e);
+                    }
+
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "error INV02: " + e);
+                }
+            }
+        }
     }//GEN-LAST:event_pupukbeliActionPerformed
 
     private void pestminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pestminActionPerformed
         // kurang pestisida
-        int npest = Integer.valueOf(nilaipest.getText());
+        npest = Integer.valueOf(nilaipest.getText());
         if (npest <= 0) {
             npest = 0;
             nilaipest.setText(String.valueOf(npest));
+            hpest = npest * 500;
         } else {
             npest -= 1;
             nilaipest.setText(String.valueOf(npest));
+            hpest = npest * 500;
         }
     }//GEN-LAST:event_pestminActionPerformed
 
     private void pestplusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pestplusActionPerformed
         // tambah pestisida
-        int npest = Integer.valueOf(nilaipest.getText());
+        npest = Integer.valueOf(nilaipest.getText());
         if (npest >= 100) {
             npest = 100;
             nilaipest.setText(String.valueOf(npest));
+            hpest = npest * 500;
         } else {
             npest += 1;
             nilaipest.setText(String.valueOf(npest));
+            hpest = npest * 500;
         }
     }//GEN-LAST:event_pestplusActionPerformed
 
     private void pestbeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pestbeliActionPerformed
         // beli pestisida
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+
+        pestTemp = pestTemp + npest;
+
+        JOptionPane pane = new JOptionPane("Anda akan membeli " + npest + " pestisida seharga " + hpest);
+        Object[] options = new String[]{"Beli", "Tidak"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Beli Pestisida");
+        dialog.show();
+        Object obj = pane.getValue();
+
+        if (obj.equals("Beli")) {
+            if ((uangTemp - hpest) < 0) {
+                JOptionPane.showMessageDialog(null, "Uang anda tidak cukup!");
+            } else {
+                int duit = uangTemp - hpest;
+                try {
+                    sql1 = "UPDATE `inventori` SET `jumlah`=" + duit + " WHERE `barang` = \"uang\";";
+                    sql2 = "UPDATE `inventori` SET `jumlah`=" + pestTemp + " WHERE `barang` = \"pestisida\";";
+                    System.out.println(duit);
+                    System.out.println(pestTemp);
+                    pst = con.prepareStatement(sql1);
+                    pst.execute();
+                    pst.close();
+                    pst = con.prepareStatement(sql2);
+                    pst.execute();
+                    pst.close();
+                    JOptionPane.showMessageDialog(null, "Berhasil Membeli");
+
+                    //update uang
+                    try {
+                        sql = "SELECT * FROM `inventori` WHERE `barang` = \"uang\"";
+                        rs = stm.executeQuery(sql);
+                        if (rs.next()) {
+
+                            uangTemp = rs.getInt("jumlah");
+                            uang.setText(String.valueOf(uangTemp));
+                        }
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "error INV03-1: "+e);
+                    }
+
+                    //update pupuk
+                    try {
+                        sql = "SELECT * FROM `inventori` WHERE `barang` = \"pestisida\"";
+                        rs = stm.executeQuery(sql);
+                        if (rs.next()) {
+
+                            pestTemp = rs.getInt("jumlah");
+                            pestisida.setText(String.valueOf(pestTemp));
+                        }
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(null, "error INV03-3: "+e);
+                    }
+
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "error INV03: " + e);
+                }
+            }
+        }
     }//GEN-LAST:event_pestbeliActionPerformed
+
+    private void TombolRumahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TombolRumahActionPerformed
+        // beli
+        beli beli = new beli();
+        beli.setVisible(true);
+    }//GEN-LAST:event_TombolRumahActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton TombolRumah;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
