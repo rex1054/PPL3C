@@ -5,17 +5,134 @@
  */
 package main;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Rex1054
  */
 public class invKayu extends javax.swing.JFrame {
 
+    int ndamar, njati, ngaharu, nmahoni, hdamar, hjati, hgaharu, hmahoni, uangTemp, damarTemp, jatiTemp, gaharuTemp, mahoniTemp;
+    String sql, sql1, sql2;
+    ResultSet rs;
+    Connection con;
+    Statement stm;
+
+    public void getUang() {
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        // ambil data uang
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"uang\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                uangTemp = rs.getInt("jumlah");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-1: gagal konek db");
+        }
+    }
+
+    public void getDamar() {
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"damar\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                damarTemp = rs.getInt("kayu");
+                damar.setText(String.valueOf(damarTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-2: gagal konek db");
+        }
+    }
+
+    public void getGaharu() {
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"gaharu\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                gaharuTemp = rs.getInt("kayu");
+                gaharu.setText(String.valueOf(gaharuTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-3: gagal konek db");
+        }
+    }
+
+    public void getJati() {
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"jati\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                jatiTemp = rs.getInt("kayu");
+                jati.setText(String.valueOf(jatiTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-2: gagal konek db");
+        }
+    }
+
+    public void getMahoni() {
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"mahoni\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                mahoniTemp = rs.getInt("kayu");
+                mahoni.setText(String.valueOf(mahoniTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-3: gagal konek db");
+        }
+    }
+
     /**
      * Creates new form invKayu
      */
     public invKayu() {
         initComponents();
+        // ambil data inventori
+        // ambil data uang
+        getUang();
+
+        // ambil data damar
+        getDamar();
+        // ambil data gaharu
+        getGaharu();
+        // ambil data jati
+        getJati();
+        // ambil data mahoni
+        getMahoni();
     }
 
     /**
@@ -27,7 +144,35 @@ public class invKayu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        gaharu = new javax.swing.JLabel();
+        mahoni = new javax.swing.JLabel();
+        jati = new javax.swing.JLabel();
+        damar = new javax.swing.JLabel();
+        nilaipupuk4 = new javax.swing.JLabel();
+        nilaipupuk5 = new javax.swing.JLabel();
+        nilaipupuk6 = new javax.swing.JLabel();
+        nilaipupuk7 = new javax.swing.JLabel();
+        nilaipupuk8 = new javax.swing.JLabel();
+        nilaipupuk9 = new javax.swing.JLabel();
+        nilaipupuk2 = new javax.swing.JLabel();
+        nilaipupuk3 = new javax.swing.JLabel();
+        damarMin = new javax.swing.JButton();
+        nDamar = new javax.swing.JLabel();
+        damarPlus = new javax.swing.JButton();
+        jatiMin = new javax.swing.JButton();
+        nJati = new javax.swing.JLabel();
+        jatiPlus = new javax.swing.JButton();
+        jualDamar = new javax.swing.JButton();
+        jualJati = new javax.swing.JButton();
+        mahoniMin = new javax.swing.JButton();
+        nMahoni = new javax.swing.JLabel();
+        mahoniPlus = new javax.swing.JButton();
+        gaharuMin = new javax.swing.JButton();
+        nGaharu = new javax.swing.JLabel();
+        gaharuPlus = new javax.swing.JButton();
+        jualMahoni = new javax.swing.JButton();
+        jualGaharu = new javax.swing.JButton();
+        keluar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -38,15 +183,223 @@ public class invKayu extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/bt-keluar.png"))); // NOI18N
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        gaharu.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        gaharu.setForeground(new java.awt.Color(0, 0, 0));
+        gaharu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        gaharu.setText("0");
+        getContentPane().add(gaharu, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 235, 40, 20));
+
+        mahoni.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        mahoni.setForeground(new java.awt.Color(0, 0, 0));
+        mahoni.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mahoni.setText("0");
+        getContentPane().add(mahoni, new org.netbeans.lib.awtextra.AbsoluteConstraints(315, 235, 40, 20));
+
+        jati.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        jati.setForeground(new java.awt.Color(0, 0, 0));
+        jati.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jati.setText("0");
+        getContentPane().add(jati, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 235, 40, 20));
+
+        damar.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        damar.setForeground(new java.awt.Color(0, 0, 0));
+        damar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        damar.setText("0");
+        getContentPane().add(damar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 235, 40, 20));
+
+        nilaipupuk4.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk4.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk4.setText("-");
+        getContentPane().add(nilaipupuk4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 310, 40, 20));
+
+        nilaipupuk5.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk5.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk5.setText("+");
+        getContentPane().add(nilaipupuk5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 310, 40, 20));
+
+        nilaipupuk6.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk6.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk6.setText("-");
+        getContentPane().add(nilaipupuk6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, 40, 20));
+
+        nilaipupuk7.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk7.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk7.setText("+");
+        getContentPane().add(nilaipupuk7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 310, 40, 20));
+
+        nilaipupuk8.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk8.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk8.setText("-");
+        getContentPane().add(nilaipupuk8, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 310, 40, 20));
+
+        nilaipupuk9.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk9.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk9.setText("+");
+        getContentPane().add(nilaipupuk9, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 310, 40, 20));
+
+        nilaipupuk2.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk2.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk2.setText("-");
+        getContentPane().add(nilaipupuk2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 40, 20));
+
+        nilaipupuk3.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nilaipupuk3.setForeground(new java.awt.Color(0, 0, 0));
+        nilaipupuk3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nilaipupuk3.setText("+");
+        getContentPane().add(nilaipupuk3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 310, 40, 20));
+
+        damarMin.setBorderPainted(false);
+        damarMin.setContentAreaFilled(false);
+        damarMin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                damarMinActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 40, 120, 30));
+        getContentPane().add(damarMin, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 305, 30, 20));
+
+        nDamar.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nDamar.setForeground(new java.awt.Color(0, 0, 0));
+        nDamar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nDamar.setText("0");
+        getContentPane().add(nDamar, new org.netbeans.lib.awtextra.AbsoluteConstraints(68, 305, 40, 20));
+
+        damarPlus.setBorderPainted(false);
+        damarPlus.setContentAreaFilled(false);
+        damarPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                damarPlusActionPerformed(evt);
+            }
+        });
+        getContentPane().add(damarPlus, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 305, 30, 20));
+
+        jatiMin.setBorderPainted(false);
+        jatiMin.setContentAreaFilled(false);
+        jatiMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jatiMinActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jatiMin, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 305, 30, 20));
+
+        nJati.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nJati.setForeground(new java.awt.Color(0, 0, 0));
+        nJati.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nJati.setText("0");
+        getContentPane().add(nJati, new org.netbeans.lib.awtextra.AbsoluteConstraints(183, 305, 40, 20));
+
+        jatiPlus.setBorderPainted(false);
+        jatiPlus.setContentAreaFilled(false);
+        jatiPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jatiPlusActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jatiPlus, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 305, 30, 20));
+
+        jualDamar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/bt-beli1.png"))); // NOI18N
+        jualDamar.setBorderPainted(false);
+        jualDamar.setContentAreaFilled(false);
+        jualDamar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jualDamarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jualDamar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 60, 20));
+
+        jualJati.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/bt-beli1.png"))); // NOI18N
+        jualJati.setBorderPainted(false);
+        jualJati.setContentAreaFilled(false);
+        jualJati.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jualJatiActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jualJati, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 340, 60, 20));
+
+        mahoniMin.setBorderPainted(false);
+        mahoniMin.setContentAreaFilled(false);
+        mahoniMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mahoniMinActionPerformed(evt);
+            }
+        });
+        getContentPane().add(mahoniMin, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 305, 30, 20));
+
+        nMahoni.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nMahoni.setForeground(new java.awt.Color(0, 0, 0));
+        nMahoni.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nMahoni.setText("0");
+        getContentPane().add(nMahoni, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 305, 40, 20));
+
+        mahoniPlus.setBorderPainted(false);
+        mahoniPlus.setContentAreaFilled(false);
+        mahoniPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mahoniPlusActionPerformed(evt);
+            }
+        });
+        getContentPane().add(mahoniPlus, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 305, 30, 20));
+
+        gaharuMin.setBorderPainted(false);
+        gaharuMin.setContentAreaFilled(false);
+        gaharuMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaharuMinActionPerformed(evt);
+            }
+        });
+        getContentPane().add(gaharuMin, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 305, 30, 20));
+
+        nGaharu.setFont(new java.awt.Font("Game Sans Serif 7", 1, 12)); // NOI18N
+        nGaharu.setForeground(new java.awt.Color(0, 0, 0));
+        nGaharu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nGaharu.setText("0");
+        getContentPane().add(nGaharu, new org.netbeans.lib.awtextra.AbsoluteConstraints(413, 305, 40, 20));
+
+        gaharuPlus.setBorderPainted(false);
+        gaharuPlus.setContentAreaFilled(false);
+        gaharuPlus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaharuPlusActionPerformed(evt);
+            }
+        });
+        getContentPane().add(gaharuPlus, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 305, 30, 20));
+
+        jualMahoni.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/bt-beli1.png"))); // NOI18N
+        jualMahoni.setBorderPainted(false);
+        jualMahoni.setContentAreaFilled(false);
+        jualMahoni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jualMahoniActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jualMahoni, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 340, 60, 20));
+
+        jualGaharu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/beli kebutuhan/bt-beli1.png"))); // NOI18N
+        jualGaharu.setBorderPainted(false);
+        jualGaharu.setContentAreaFilled(false);
+        jualGaharu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jualGaharuActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jualGaharu, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 340, 60, 20));
+
+        keluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/mulai/bt-keluar.png"))); // NOI18N
+        keluar.setBorderPainted(false);
+        keluar.setContentAreaFilled(false);
+        keluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keluarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(keluar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 40, 120, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/main/IMG/jual/background-jual.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -54,10 +407,277 @@ public class invKayu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void keluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keluarActionPerformed
         // keluar
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_keluarActionPerformed
+
+    private void damarMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_damarMinActionPerformed
+        //kurang damar
+        ndamar = Integer.valueOf(nDamar.getText());
+        if (ndamar <= 0) {
+            ndamar = 0;
+            nDamar.setText(String.valueOf(ndamar));
+            hdamar = ndamar * 2000;
+        }
+        else {
+            ndamar -= 1;
+            nDamar.setText(String.valueOf(ndamar));
+            hdamar = ndamar * 2000;
+        }
+    }//GEN-LAST:event_damarMinActionPerformed
+
+    private void damarPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_damarPlusActionPerformed
+        //tambah damar
+        getDamar();
+        ndamar = Integer.valueOf(nDamar.getText());
+        if (ndamar >= damarTemp) {
+            ndamar = damarTemp;
+            nDamar.setText(String.valueOf(ndamar));
+            hdamar = ndamar * 2000;
+        } else {
+            ndamar += 1;
+            nDamar.setText(String.valueOf(ndamar));
+            hdamar = ndamar * 2000;
+        }
+    }//GEN-LAST:event_damarPlusActionPerformed
+
+    private void jatiMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jatiMinActionPerformed
+        // kurang jati
+        njati = Integer.valueOf(nJati.getText());
+        if (njati <= 0) {
+            njati = 0;
+            nJati.setText(String.valueOf(njati));
+            hjati = njati * 5000;
+        } else {
+            njati -= 1;
+            nJati.setText(String.valueOf(njati));
+            hjati = njati * 5000;
+        }
+    }//GEN-LAST:event_jatiMinActionPerformed
+
+    private void jatiPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jatiPlusActionPerformed
+        // tambah jati
+        getJati();
+        njati = Integer.valueOf(nJati.getText());
+        if (njati >= jatiTemp) {
+            njati = jatiTemp;
+            nJati.setText(String.valueOf(njati));
+            hjati = njati * 5000;
+        } else {
+            njati += 1;
+            nJati.setText(String.valueOf(njati));
+            hjati = njati * 5000;
+        }
+    }//GEN-LAST:event_jatiPlusActionPerformed
+
+    private void jualDamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jualDamarActionPerformed
+        // jual damar
+        getUang();
+        getDamar();
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        damarTemp = damarTemp - ndamar;
+
+        JOptionPane pane = new JOptionPane("Anda akan menjual " + ndamar + " Damar seharga " + hdamar);
+        Object[] options = new String[]{"Jual", "Tidak"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Jual Kayu Damar");
+        dialog.show();
+        Object obj = pane.getValue();
+
+        if (obj.equals("Jual")) {
+            if (ndamar == 0) {
+                JOptionPane.showMessageDialog(null, "Anda tidak punya kayu Damar");
+            } else {
+            int duit = uangTemp + hdamar;
+            try {
+                sql1 = "UPDATE `inventori` SET `jumlah`=" + duit + " WHERE `barang` = \"uang\";";
+                sql2 = "UPDATE `inventori` SET `kayu`=" + damarTemp + " WHERE `barang` = \"damar\";";
+                stm.execute(sql1);
+                stm.execute(sql2);
+                JOptionPane.showMessageDialog(null, "Berhasil Menjual");
+                getDamar();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "error INV02: " + e);
+            }
+        }
+        }
+        
+    }//GEN-LAST:event_jualDamarActionPerformed
+
+    private void jualJatiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jualJatiActionPerformed
+        // jual Jati
+        getUang();
+        getJati();
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        jatiTemp = jatiTemp - njati;
+
+        JOptionPane pane = new JOptionPane("Anda akan menjual " + njati + " Jati seharga " + hjati);
+        Object[] options = new String[]{"Jual", "Tidak"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Jual Kayu Jati");
+        dialog.show();
+        Object obj = pane.getValue();
+
+        if (obj.equals("Jual")) {
+            if (njati == 0) {
+                JOptionPane.showMessageDialog(null, "Anda tidak punya katu Jati");
+            }else {
+            int duit = uangTemp + hjati;
+            try {
+                sql1 = "UPDATE `inventori` SET `jumlah`=" + duit + " WHERE `barang` = \"uang\";";
+                sql2 = "UPDATE `inventori` SET `kayu`=" + jatiTemp + " WHERE `barang` = \"jati\";";
+                stm.execute(sql1);
+                stm.execute(sql2);
+                JOptionPane.showMessageDialog(null, "Berhasil Menjual");
+                getJati();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "error INV02: " + e);
+            }
+        }
+        }
+    }//GEN-LAST:event_jualJatiActionPerformed
+
+    private void mahoniMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mahoniMinActionPerformed
+        // mahoni min
+        nmahoni = Integer.valueOf(nMahoni.getText());
+        if (nmahoni <= 0) {
+            nmahoni = 0;
+            nMahoni.setText(String.valueOf(nmahoni));
+            hmahoni = nmahoni * 4000;
+        } else {
+            nmahoni -= 1;
+            nMahoni.setText(String.valueOf(nmahoni));
+            hmahoni = nmahoni * 4000;
+        }
+
+    }//GEN-LAST:event_mahoniMinActionPerformed
+
+    private void mahoniPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mahoniPlusActionPerformed
+        // mahoni plus
+        getMahoni();
+        nmahoni = Integer.valueOf(nMahoni.getText());
+        if (nmahoni >= mahoniTemp) {
+            nmahoni = mahoniTemp;
+            nMahoni.setText(String.valueOf(nmahoni));
+            hmahoni = nmahoni * 4000;
+        } else {
+            nmahoni += 1;
+            nMahoni.setText(String.valueOf(nmahoni));
+            hmahoni = nmahoni * 4000;
+        }
+    }//GEN-LAST:event_mahoniPlusActionPerformed
+
+    private void gaharuMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaharuMinActionPerformed
+        // gaharu min
+        ngaharu = Integer.valueOf(nGaharu.getText());
+        if (ngaharu <= 0) {
+            ngaharu = 0;
+            nGaharu.setText(String.valueOf(ngaharu));
+            hgaharu = ngaharu * 3000;
+        } else {
+            ngaharu -= 1;
+            nGaharu.setText(String.valueOf(ngaharu));
+            hgaharu = ngaharu * 3000;
+        }
+    }//GEN-LAST:event_gaharuMinActionPerformed
+
+    private void gaharuPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaharuPlusActionPerformed
+        // gaharu plus
+        getJati();
+        ngaharu = Integer.valueOf(nGaharu.getText());
+        if (ngaharu >= gaharuTemp) {
+            ngaharu = gaharuTemp;
+            nGaharu.setText(String.valueOf(ngaharu));
+            hgaharu = ngaharu * 3000;
+        } else {
+            ngaharu += 1;
+            nGaharu.setText(String.valueOf(ngaharu));
+            hgaharu = ngaharu * 3000;
+        }
+    }//GEN-LAST:event_gaharuPlusActionPerformed
+
+    private void jualMahoniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jualMahoniActionPerformed
+        // jual mahoni
+        getUang();
+        getMahoni();
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        mahoniTemp = mahoniTemp - nmahoni;
+
+        JOptionPane pane = new JOptionPane("Anda akan menjual " + nmahoni + " Mahoni seharga " + hmahoni);
+        Object[] options = new String[]{"Jual", "Tidak"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Jual Kayu Mahoni");
+        dialog.show();
+        Object obj = pane.getValue();
+
+        if (obj.equals("Jual")) {
+            if (nmahoni == 0) {
+                JOptionPane.showMessageDialog(null, "Anda tidak punya kayu Mahoni");
+            } else {
+            int duit = uangTemp + hmahoni;
+            try {
+                sql1 = "UPDATE `inventori` SET `jumlah`=" + duit + " WHERE `barang` = \"uang\";";
+                sql2 = "UPDATE `inventori` SET `kayu`=" + mahoniTemp + " WHERE `barang` = \"mahoni\";";
+                stm.execute(sql1);
+                stm.execute(sql2);
+        getMahoni();
+                
+                JOptionPane.showMessageDialog(null, "Berhasil Menjual");
+                
+        getMahoni();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "error INV02: " + e);
+            }
+        }
+        }
+    }//GEN-LAST:event_jualMahoniActionPerformed
+
+    private void jualGaharuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jualGaharuActionPerformed
+        // jual gaharu
+        getUang();
+        getGaharu();
+        db DB = new db();
+        DB.config();
+        con = (Connection) DB.con;
+        stm = DB.stm;
+        gaharuTemp = gaharuTemp - ngaharu;
+
+        JOptionPane pane = new JOptionPane("Anda akan menjual " + ngaharu + " Gaharu seharga " + hgaharu);
+        Object[] options = new String[]{"Jual", "Tidak"};
+        pane.setOptions(options);
+        JDialog dialog = pane.createDialog(new JFrame(), "Jual Kayu Damar");
+        dialog.show();
+        Object obj = pane.getValue();
+
+        if (obj.equals("Jual")) {
+            if (ngaharu == 0) {
+                JOptionPane.showMessageDialog(null, "Anda tidak punya kayu Gaharu");
+            } else {
+            int duit = uangTemp + hgaharu;
+            try {
+                sql1 = "UPDATE `inventori` SET `jumlah`=" + duit + " WHERE `barang` = \"uang\";";
+                sql2 = "UPDATE `inventori` SET `kayu`=" + gaharuTemp + " WHERE `barang` = \"gaharu\";";
+                stm.execute(sql1);
+                stm.execute(sql2);
+                JOptionPane.showMessageDialog(null, "Berhasil Menjual");
+                getGaharu();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "error INV02: " + e);
+            }
+        }
+        }
+        
+    }//GEN-LAST:event_jualGaharuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -95,7 +715,35 @@ public class invKayu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel damar;
+    private javax.swing.JButton damarMin;
+    private javax.swing.JButton damarPlus;
+    private javax.swing.JLabel gaharu;
+    private javax.swing.JButton gaharuMin;
+    private javax.swing.JButton gaharuPlus;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jati;
+    private javax.swing.JButton jatiMin;
+    private javax.swing.JButton jatiPlus;
+    private javax.swing.JButton jualDamar;
+    private javax.swing.JButton jualGaharu;
+    private javax.swing.JButton jualJati;
+    private javax.swing.JButton jualMahoni;
+    private javax.swing.JButton keluar;
+    private javax.swing.JLabel mahoni;
+    private javax.swing.JButton mahoniMin;
+    private javax.swing.JButton mahoniPlus;
+    private javax.swing.JLabel nDamar;
+    private javax.swing.JLabel nGaharu;
+    private javax.swing.JLabel nJati;
+    private javax.swing.JLabel nMahoni;
+    private javax.swing.JLabel nilaipupuk2;
+    private javax.swing.JLabel nilaipupuk3;
+    private javax.swing.JLabel nilaipupuk4;
+    private javax.swing.JLabel nilaipupuk5;
+    private javax.swing.JLabel nilaipupuk6;
+    private javax.swing.JLabel nilaipupuk7;
+    private javax.swing.JLabel nilaipupuk8;
+    private javax.swing.JLabel nilaipupuk9;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,13 +13,16 @@ import java.sql.Statement;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
  * @author Rex1054
  */
 public class inventori extends javax.swing.JPanel {
-
+Timer timer;
+TimerTask task;
     int npest, hpest, npupuk, hpupuk;
     Connection con;
     Statement stm;
@@ -27,6 +30,7 @@ public class inventori extends javax.swing.JPanel {
     ResultSet rs;
     String sql, sql1, sql2;
     int uangTemp, pestTemp, pupukTemp;
+    lahan lahan;
 
     /**
      * Creates new form inventori
@@ -95,6 +99,44 @@ public class inventori extends javax.swing.JPanel {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "error INV01-3: gagal konek db");
         }
+        
+        
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+            sql = "SELECT * FROM `inventori` WHERE `barang` = \"uang\"";
+            rs = stm.executeQuery(sql);
+            if (rs.next()) {
+
+                uangTemp = rs.getInt("jumlah");
+                uang.setText(String.valueOf(uangTemp));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-1: gagal konek db");
+        }
+                
+                int dataBibit [] = new int [4];
+        int i = 0;
+        // ambil data bibit
+        try {
+            sql = "SELECT * FROM `inventori` WHERE `id`>1 && `id` <6";
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                dataBibit[i]=rs.getInt("jumlah");
+                i++;
+            }
+            ndamar.setText(String.valueOf(dataBibit[0]));
+            ngaharu.setText(String.valueOf(dataBibit[1]));
+            njati.setText(String.valueOf(dataBibit[2]));
+            nmahoni.setText(String.valueOf(dataBibit[3]));
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "error INV01-3: gagal konek db");
+        }
+            }
+        };
+        timer = new Timer();
+        timer.schedule(task, 0, 1000);
     }
 
     /**
@@ -330,7 +372,6 @@ public class inventori extends javax.swing.JPanel {
         DB.config();
         con = (Connection) DB.con;
         stm = DB.stm;
-
         pupukTemp = pupukTemp + npupuk;
 
         JOptionPane pane = new JOptionPane("Anda akan membeli " + npupuk + " pupuk seharga " + hpupuk);
@@ -425,7 +466,6 @@ public class inventori extends javax.swing.JPanel {
         DB.config();
         con = (Connection) DB.con;
         stm = DB.stm;
-
         pestTemp = pestTemp + npest;
 
         JOptionPane pane = new JOptionPane("Anda akan membeli " + npest + " pestisida seharga " + hpest);
@@ -452,7 +492,7 @@ public class inventori extends javax.swing.JPanel {
                     pst.execute();
                     pst.close();
                     JOptionPane.showMessageDialog(null, "Berhasil Membeli");
-
+                    
                     //update uang
                     try {
                         sql = "SELECT * FROM `inventori` WHERE `barang` = \"uang\"";

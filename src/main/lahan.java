@@ -33,7 +33,7 @@ public class lahan extends javax.swing.JPanel {
     String sql, sql1, sql2;
     Timer harian, perjam;
 
-    Random random = new Random();
+    Random randoman = new Random();
     boolean[] statusLahan = {false, false, false, false, false, false, false, false, false, false,
         false, false, false, false, false, false};
     int[] jenisPohon = new int[16];
@@ -41,14 +41,20 @@ public class lahan extends javax.swing.JPanel {
     int[] umurPohon = new int[16];
     int[] maxUmur = new int[16];
     int[] maxAir = new int[16];
+    int[] minAir = new int[16];
     int[] dataBibit = new int[4];
     int[] pemupukan = new int[16];
     int[] level = new int[16];
+    int[] levelHari = new int[16];
     int[] pemestisida = new int[16];
     int[] krisisAir = new int[16];
+    int[] maxPupuk = new int[16];
+    int[] maxPest = new int[16];
+    String[] siapPanen = new String[16];
+    String[] namaPohon = new String[16];
     String[] urlIMG = new String[16];
     String[] statusPohon = new String[16];
-    int hari, uangTemp, pestTemp, pupukTemp, jam = 0, menit = 0;
+    int hari, random, uangTemp, pestTemp, pupukTemp, jam = 0, menit = 0;
 
     public void getHari() {
         db DB = new db();
@@ -87,19 +93,17 @@ public class lahan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "error INV01-3: gagal konek db");
         }
     }
-    
-    public void updateBibit(int indexBibit){
+
+    public void updateBibit(int indexBibit) {
         db DB = new db();
         DB.config();
         con = (Connection) DB.con;
         stm = DB.stm;
-        int i = 0;
-        // ambil data bibit
         try {
-    sql2 = "UPDATE `inventori` SET `jumlah`="+dataBibit[indexBibit]+" WHERE `id` = "+(indexBibit+2);
+            sql2 = "UPDATE `inventori` SET `jumlah`=" + dataBibit[indexBibit] + " WHERE `id` = " + (indexBibit + 2);
             stm.execute(sql2);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "error INV097: "+e);
+            JOptionPane.showMessageDialog(null, "error INV097: " + e);
         }
     }
 
@@ -120,8 +124,6 @@ public class lahan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "error LH01-2: gagal konek db");
         }
     }
-    
-    public void updatePestisida(){}
 
     public void getUang() {
         db DB = new db();
@@ -158,8 +160,6 @@ public class lahan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "error LH01-3: gagal konek db");
         }
     }
-    
-    public void updatePupuk(){}
 
     public void tanam(int lahan) {
 
@@ -174,9 +174,10 @@ public class lahan extends javax.swing.JPanel {
                     + ",`status`=\"sehat\""
                     + ", `img`=\"" + urlIMG[lahan - 1] + "\""
                     + ", `maxAir`=" + maxAir[lahan - 1] + ""
-                    + ", `maxUmur`=" + maxUmur[lahan - 1] + " WHERE `lahan` = " + lahan;
+                    + ", `maxUmur`=" + maxUmur[lahan - 1] + ""
+                    + ", `berpohon`=\"true\""
+                    + ", `level`=1 WHERE `lahan` = " + lahan;
             stm.execute(sql1);
-            
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "error INV099: " + e);
@@ -188,8 +189,6 @@ public class lahan extends javax.swing.JPanel {
         DB.config();
         con = (Connection) DB.con;
         stm = DB.stm;
-        int i = 0;
-        // ambil data bibit
         try {
             sql = "UPDATE `lahan` SET `air`=" + statusAir[lahan - 1] + " WHERE lahan = " + lahan;
             stm.execute(sql);
@@ -199,54 +198,303 @@ public class lahan extends javax.swing.JPanel {
         }
     }
 
+    public void memupuk(int lahan) {
+        if (pupukTemp <= 0) {
+            JOptionPane.showMessageDialog(null, "Pupuk habis, silahkan beli");
+        } else {
+            if (pemupukan[lahan] > maxPupuk[lahan]) {
+                JOptionPane.showMessageDialog(null, "Pemupukan sudah cukup untuk level ini");
+            } else {
+                JOptionPane.showMessageDialog(null, "Pemupukan Berhasil");
+                pemupukan[lahan] += 1;
+                pupukTemp -= 1;
+                db DB = new db();
+                DB.config();
+                con = (Connection) DB.con;
+                stm = DB.stm;
+                try {
+                    sql1 = "UPDATE `lahan` SET `pupuk`=" + pemupukan[lahan] + " WHERE lahan = " + (lahan+1);
+                    stm.execute(sql1);
+                    sql2 = "UPDATE `inventori` SET `jumlah`=" + pupukTemp + " WHERE barang = \"pupuk\"";
+                    stm.execute(sql2);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                }
+            }
+        }
+    }
+    
+    public void memestisida(int lahan) {
+    if (pestTemp <= 0) {
+            JOptionPane.showMessageDialog(null, "Pestisida habis, silahkan beli");
+        } else {
+            if (statusPohon[lahan].equals("sakit")){
+                JOptionPane.showMessageDialog(null, "Pestisida Berhasil, pohon sudah sehat");
+                pemestisida[lahan] += 1;
+                pestTemp -= 1;
+                statusPohon[lahan] = "sehat";
+                db DB = new db();
+                DB.config();
+                con = (Connection) DB.con;
+                stm = DB.stm;
+                try {
+                    sql1 = "UPDATE `lahan` SET `pestisida`=" + pemestisida[lahan] + ", `status`=\"sehat\" WHERE lahan = " + (lahan+1);
+                    stm.execute(sql1);
+                    sql2 = "UPDATE `inventori` SET `jumlah`=" + pestTemp + " WHERE barang = \"pestisida\"";
+                    stm.execute(sql2);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                }
+            } else {
+            JOptionPane.showMessageDialog(null, "Pohon tidak butuh pestisida");
+            }
+        }
+    }
+    
+    public void panen(int pohon) {
+        String barang="";
+        if (pohon == 9) {
+            barang = "damar";
+        } else
+            if (pohon == 10) {
+            barang = "gaharu";
+        } else
+                if (pohon == 11) {
+            barang = "jati";
+        } else
+                    if (pohon == 12) {
+            barang = "mahoni";
+        }
+        db DB = new db();
+                DB.config();
+                con = (Connection) DB.con;
+                stm = DB.stm;
+                try {
+                    sql2 = "UPDATE `inventori` SET `kayu`=(`kayu`+1) WHERE barang=\""+barang+"\"";
+                    stm.execute(sql2);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                }
+    }
+
+    public void levelUp(int i) {
+        if (levelHari[i] <= umurPohon[i]) {
+            if (pemupukan[i] < maxPupuk[i]) {
+                JOptionPane.showMessageDialog(null, "Silahkan melakukan pemupukan pada lahan " + (i + 1));
+            } else {
+                if (level[i] < 3) {
+                level[i] += 1;
+                } else {
+                level[i] = 3;
+                }
+                //ganti level
+                if (level[i] == 2) {
+                    //ganti ikon pohon damar level 2
+                    if (jenisPohon[i] == 1) {
+                        urlIMG[i] = "/main/IMG/pohon/damar2.png";
+                        jenisPohon[i] = 5;
+                        maxAir[i] = 400;
+                        level[i] = 2;
+                        minAir[i] = 170;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=5, maxAir=400, level=2"
+                                    + ",`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    } else //ganti ikon pohon gaharu level 2
+                    if (jenisPohon[i] == 2) {
+                        urlIMG[i] = "/main/IMG/pohon/gaharu2.png";
+                        jenisPohon[i] = 6;
+                        maxAir[i] = 450;
+                        level[i] = 2;
+                        minAir[i] = 180;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=6, maxAir=450, level=2"
+                                    + ",`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    } else //ganti ikon pohon jati level 2
+                    if (jenisPohon[i] == 3) {
+                        urlIMG[i] = "/main/IMG/pohon/jati2.png";
+                        jenisPohon[i] = 7;
+                        maxAir[i] = 550;
+                        level[i] = 2;
+                        minAir[i] = 200;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=7, maxAir=550, level=2,"
+                                    + "`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    } else //ganti ikon pohon mahoni level 2
+                    if (jenisPohon[i] == 4) {
+                        urlIMG[i] = "/main/IMG/pohon/mahoni2.png";
+                        jenisPohon[i] = 8;
+                        maxAir[i] = 500;
+                        level[i] = 2;
+                        minAir[i] = 190;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=8, maxAir=500, level=2,"
+                                    + "`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    }
+                } else //jika level pohon = 3
+                if (level[i] == 5) {
+                    //ganti ikon pohon damar level 3
+                    if (jenisPohon[i] == 5) {
+                        urlIMG[i] = "/main/IMG/pohon/damar3.png";
+                        jenisPohon[i] = 9;
+                        maxAir[i] = 600;
+                        level[i] = 3;
+                        minAir[i] = 270;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=9, maxAir=600, level=3,"
+                                    + "`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    } else //ganti ikon pohon gaharu level 3
+                    if (jenisPohon[i] == 6) {
+                        urlIMG[i] = "/main/IMG/pohon/gaharu3.png";
+                        jenisPohon[i] = 10;
+                        maxAir[i] = 650;
+                        level[i] = 3;
+                        minAir[i] = 280;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=10, maxAir=650, level=3,"
+                                    + "`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    } else //ganti ikon pohon jati level 3
+                    if (jenisPohon[i] == 7) {
+                        urlIMG[i] = "/main/IMG/pohon/jati3.png";
+                        jenisPohon[i] = 11;
+                        maxAir[i] = 750;
+                        level[i] = 3;
+                        minAir[i] = 300;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=11, maxAir=750, level=3,"
+                                    + "`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    } else //ganti ikon pohon mahoni level 3
+                    if (jenisPohon[i] == 8) {
+                        urlIMG[i] = "/main/IMG/pohon/mahoni3.png";
+                        jenisPohon[i] = 12;
+                        maxAir[i] = 700;
+                        level[i] = 3;
+                        minAir[i] = 290;
+                        try {
+                            sql = "UPDATE `lahan` SET pohon=12, maxAir=700, level=3,"
+                                    + "`img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV096: " + e);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void updateStatus() {
         db DB = new db();
         DB.config();
         con = (Connection) DB.con;
         stm = DB.stm;
+
         for (int i = 0; i < 16; i++) {
+            // jika lahan kosong
             if (statusLahan[i] == false) {
 
             } else {
+                // jika lahan tidak kosong,
+                if (umurPohon[i] == maxUmur[i]) {
+                    JOptionPane.showMessageDialog(null, "Pohon Siap Dipanen");
+                    siapPanen[i] = "true";
+                    try {
+                            sql = "UPDATE `lahan` SET `siapPanen`=\"true\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                        }
+                } else
                 if (statusAir[i] <= 45) {
-                    if (krisisAir[i] == 2) {
-                        JOptionPane.showMessageDialog(null, "Pohon pada lahan "+i+" mati!");
+                    // cek krisis air, jika krisis air mencapai angka 3, maka pohon mati
+                    if (krisisAir[i] == 3) {
+                        JOptionPane.showMessageDialog(null, "Pohon pada lahan " + i + " mati!");
+                        umurPohon[i] += 0;
                         if (level[i] == 1) {
-                        urlIMG[i] = "/main/IMG/pohon/mati1.png";
+                            urlIMG[i] = "/main/IMG/pohon/mati1.png";
                         } else if (level[i] == 2) {
                             urlIMG[i] = "/main/IMG/pohon/mati2.png";
                         } else if (level[i] == 3) {
                             urlIMG[i] = "/main/IMG/pohon/mati3.png";
                         }
                         updateIcon();
+                        // update url ikon pada database
                         try {
-                        sql = "UPDATE `lahan` SET `status` = \"mati\", `img`=\""+urlIMG[i]+"\" WHERE `lahan` = " + (i + 1);
+                            sql = "UPDATE `lahan` SET `status` = \"mati\", `img`=\"" + urlIMG[i] + "\" WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                        }
+                        //jika lahan kekeringan
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Lahan " + (i + 1) + " kekeringan, silahkan disiram!");
+                        umurPohon[i] += 0;
+                        krisisAir[i] += 1;
+                        //update status lahan pada database
+                        try {
+                            sql = "UPDATE `lahan` SET `status`= \"kering\", `critical`=" + krisisAir[i] + " WHERE `lahan` = " + (i + 1);
+                            stm.execute(sql);
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                        }
+                    }
+                } else {
+                    //jika lahan tidak kekeringan dan tidak mati
+                    random = randoman.nextInt(5);
+                    if (random == 0) {
+                        statusPohon[i] = "sakit";
+                    statusAir[i] -= minAir[i];
+                    umurPohon[i] += 1;
+                    try {
+                        sql = "UPDATE `lahan` SET `status`= \"sakit\", `critical`=0,`air`=" + statusAir[i] + ", `umur`=" + umurPohon[i] + " WHERE `lahan` = " + (i + 1);
                         stm.execute(sql);
                     } catch (SQLException e) {
                         JOptionPane.showMessageDialog(null, "error INV099: " + e);
                     }
                     } else {
-                    JOptionPane.showMessageDialog(null, "Lahan " + (i + 1) + " kekeringan, silahkan disiram!");
-                    krisisAir[i] += 1;
-                    try {
-                        sql = "UPDATE `lahan` SET `status`= \"kering\", `critical`="+krisisAir[i]+" WHERE `lahan` = " + (i + 1);
-                        stm.execute(sql);
-                    } catch (SQLException e) {
-                        JOptionPane.showMessageDialog(null, "error INV099: " + e);
-                    }
-                    }
-                } else {
-                    statusAir[i] -= 45;
+                    statusPohon[i] = "sehat";
+                    statusAir[i] -= minAir[i];
                     umurPohon[i] += 1;
                     try {
-                        sql = "UPDATE `lahan` SET `air`=" + statusAir[i] + ", `umur`=" + umurPohon[i] + " WHERE `lahan` = " + (i + 1);
+                        sql = "UPDATE `lahan` SET `status`= \"sehat\", `critical`=0,`air`=" + statusAir[i] + ", `umur`=" + umurPohon[i] + " WHERE `lahan` = " + (i + 1);
                         stm.execute(sql);
                     } catch (SQLException e) {
                         JOptionPane.showMessageDialog(null, "error INV099: " + e);
                     }
+                    }
+                    //cek batas level dan umur pohon
+                    levelUp(i);
                 }
             }
         }
+        updateIcon();
 
     }
 
@@ -271,15 +519,33 @@ public class lahan extends javax.swing.JPanel {
         DB.config();
         con = (Connection) DB.con;
         stm = DB.stm;
-        int i = 0;
-        // ambil data bibit
-        try {
-            sql = "UPDATE `lahan` SET `air`=0, `umur`=0, `maxAir`=0, `maxUmur`=0"
-                    + ", `pohon`=0, `status`=null, `img`=null WHERE lahan = " + lahan;
-            stm.execute(sql);
+        if (statusLahan[lahan] == false) {
+            JOptionPane.showMessageDialog(null, "Lahan sudah bersih, tidak perlu dibersihkan lagi");
+        } else {
+            if (pemupukan[lahan] == 0 || pemestisida[lahan] == 0 || krisisAir[lahan] == 0) {
+                try {
+                    sql1 = "UPDATE `lahan` SET `pupuk`=99, `pestisida`=99, `critical` = 0 WHERE lahan = " + (lahan + 1);
+                    stm.execute(sql1);
+                    sql2 = "UPDATE `lahan` SET `air`=0, `umur`=0, `maxAir`=0, `maxUmur`=0"
+                            + ", `pohon`=14, `level` = 0, `status`=null, `img`=null, `critical`=0, `berpohon`=\"false\","
+                            + "`pupuk`=0, `pestisida`=0, `siapPanen`=\"false\" WHERE lahan = " + (lahan + 1);
+                    stm.execute(sql2);
+                    JOptionPane.showMessageDialog(null, "Lahan berhasil dibersihkan");
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                }
+            } else {
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                try {
+                    sql = "UPDATE `lahan` SET `air`=0, `umur`=0, `maxAir`=0, `maxUmur`=0"
+                            + ", `pohon`=14, `status`=null, `img`=null, `critical`=0 `berpohon`=\"false\","
+                            + "`pupuk`=0, `pestisida`=0, `siapPanen`=\"false\" WHERE lahan = " + (lahan + 1);
+                    stm.execute(sql);
+                    JOptionPane.showMessageDialog(null, "Lahan berhasil dibersihkan");
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "error INV099: " + e);
+                }
+            }
         }
     }
 
@@ -289,13 +555,16 @@ public class lahan extends javax.swing.JPanel {
         con = (Connection) DB.con;
         stm = DB.stm;
         int i = 0;
-        // ambil data bibit
         try {
-            sql = "SELECT * FROM `lahan` ORDER BY `lahan` ASC";
+            sql = "SELECT `lahan`.lahan, `lahan`.pohon, `lahan`.air, `lahan`.umur, "
+                    + "`lahan`.umur, `lahan`.status, `lahan`.img, `lahan`.maxAir, "
+                    + "`lahan`.maxUmur, `lahan`.level, `lahan`.pupuk, `lahan`.pestisida, "
+                    + "`lahan`.critical, `lahan`.berpohon, `lahan`.siapPanen, `pohon`.airMin, `pohon`.hari, `pohon`.maxPest, "
+                    + "`pohon`.maxPupuk from `lahan` join `pohon` on `lahan`.pohon = `pohon`.id order by `lahan`.lahan ASC";
             rs = stm.executeQuery(sql);
             while (rs.next()) {
                 jenisPohon[i] = rs.getInt("pohon");
-                if (jenisPohon[i] != 0) {
+                if (rs.getString("berpohon").equals("true")) {
                     statusLahan[i] = true;
                 } else {
                     statusLahan[i] = false;
@@ -304,17 +573,34 @@ public class lahan extends javax.swing.JPanel {
                 umurPohon[i] = rs.getInt("umur");
                 maxUmur[i] = rs.getInt("maxUmur");
                 maxAir[i] = rs.getInt("maxAir");
+                minAir[i] = rs.getInt("airMin");
                 pemupukan[i] = rs.getInt("pupuk");
                 pemestisida[i] = rs.getInt("pestisida");
                 krisisAir[i] = rs.getInt("critical");
                 level[i] = rs.getInt("level");
+                levelHari[i] = rs.getInt("hari");
+                maxPupuk[i] = rs.getInt("maxPupuk");
+                maxPest[i] = rs.getInt("maxPest");
+                siapPanen[i] = rs.getString("siapPanen");
                 if (rs.getString("img") == null) {
                     urlIMG[i] = "/main/IMG/pohon/null.png";
                 } else {
                     urlIMG[i] = rs.getString("img");
                 }
                 statusPohon[i] = rs.getString("status");
+                if (rs.getInt("pohon") == 1 || rs.getInt("pohon") == 5 || rs.getInt("pohon") == 9) {
+                    namaPohon[i] = "Damar";
+                } else if (rs.getInt("pohon") == 2 || rs.getInt("pohon") == 6 || rs.getInt("pohon") == 10) {
+                    namaPohon[i] = "Gaharu";
+                } else if (rs.getInt("pohon") == 3 || rs.getInt("pohon") == 7 || rs.getInt("pohon") == 11) {
+                    namaPohon[i] = "Jati";
+                } else if (rs.getInt("pohon") == 4 || rs.getInt("pohon") == 8 || rs.getInt("pohon") == 12) {
+                    namaPohon[i] = "Mahoni";
+                } else {
+                    namaPohon[i] = "-";
+                }
                 i++;
+
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "error INV098: " + e);
@@ -610,6 +896,7 @@ public class lahan extends javax.swing.JPanel {
                         updateBibit(3);
                     }
                 }
+                getLahan();
                 updateIcon();
             }
 
@@ -629,17 +916,12 @@ public class lahan extends javax.swing.JPanel {
         } else if (obj.equals("Panen")) {
             if (statusLahan[index] == false) {
                 JOptionPane.showMessageDialog(null, "Silahkan menanam terlebih dahulu!");
-            } else if (umurPohon[index] >= maxUmur[index]) {
-
+            } else {
+                if (siapPanen[index].equals("true")) {
                 JOptionPane.showMessageDialog(null, "Berhasil Panen! \n"
                         + "Hasil panen dimasukkan ke dalam inventori");
-                jenisPohon[index] = 0;
-
-            }
-        } else if (obj.equals("Bersihkan")) {
-
-            JOptionPane.showMessageDialog(null, "Lahan telah dibersihkan! \n"
-                    + "siap untuk ditanam kembali");
+                panen(jenisPohon[index]);
+                bersih(index);
             phSetNullIcon();
             jenisPohon[index] = 0;
             statusAir[index] = 0;
@@ -648,16 +930,49 @@ public class lahan extends javax.swing.JPanel {
             maxAir[index] = 0;
             urlIMG[index] = "";
             statusLahan[index] = false;
-            bersih(index + 1);
+            siapPanen[index] = "false";
+            updateIcon();
+                }
+            }
+        } else if (obj.equals("Bersihkan")) {
+            bersih(index);
+            phSetNullIcon();
+            jenisPohon[index] = 0;
+            namaPohon[index] = "-";
+            statusAir[index] = 0;
+            umurPohon[index] = 0;
+            maxAir[index] = 0;
+            maxUmur[index] = 0;
+            maxAir[index] = 0;
+            urlIMG[index] = "";
+            statusLahan[index] = false;
+            statusPohon[index] = "-";
+            siapPanen[index] = "false";
+            pemupukan[index] = 0;
+            maxPupuk[index] = 0;
+            pemestisida[index] = 0;
+            maxPest[index] = 0;
+            level[index] = 0;
+            levelHari[index] = 0;
             updateIcon();
         } else if (obj.equals("Status")) {
             JOptionPane.showMessageDialog(null, "Status Lahan : " + statusLahan[0] + "\n"
-                    + "Jenis Pohon : " + jenisPohon[index] + "\n"
+                    + "Kode Pohon : " + jenisPohon[index] + "\n"
+                    + "Nama Pohon : " + namaPohon[index] + "\n"
+                    + "Level : " + level[index] + "\n"
+                    + "Status Pohon : " + statusPohon[index] + "\n"
+                    + "Status Pemupukan : " + pemupukan[index] + " /"+maxPupuk[index]+"\n"
+                    + "Status Pestisida : " + pemestisida[index] + " /"+maxPest[index]+"\n"
                     + "Status Air : " + statusAir[index] + "\n"
+                    + "Kapasitas Air : " + maxAir[index] + "\n"
+                    + "Level Up pada umur ke : " + levelHari[index] + "\n"
                     + "Umur Pohon : " + umurPohon[index] + "\n"
-                    + "Umur Maksimal : " + maxUmur[index]);
+                    + "Umur Maksimal : " + maxUmur[index] +"\n"
+                    + "Siap Panen : " + siapPanen[index]);
         } else if (obj.equals("Pupuk")) {
-            
+            memupuk(index);
+        } else if (obj.equals("Pestisida")) {
+            memestisida(index);
         }
     }
 
@@ -1232,12 +1547,12 @@ public class lahan extends javax.swing.JPanel {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                updateStatus();
                 updateHari();
+                updateStatus();
             }
         };
-        updateStatus();
         updateHari();
+        updateStatus();
         harian = new Timer();
         harian.schedule(task, 180000, 180000);
 
