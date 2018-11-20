@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2018 at 04:33 AM
+-- Generation Time: Nov 20, 2018 at 09:00 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -51,21 +51,22 @@ DROP TABLE IF EXISTS `inventori`;
 CREATE TABLE IF NOT EXISTS `inventori` (
 `id` bigint(20) unsigned NOT NULL,
   `barang` varchar(30) NOT NULL,
-  `jumlah` int(11) DEFAULT NULL
+  `jumlah` int(11) NOT NULL,
+  `kayu` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `inventori`
 --
 
-INSERT INTO `inventori` (`id`, `barang`, `jumlah`) VALUES
-(1, 'uang', 9000),
-(2, 'damar', 3),
-(3, 'gaharu', 0),
-(4, 'jati', 4),
-(5, 'mahoni', 5),
-(6, 'pupuk', 17),
-(7, 'pestisida', 8);
+INSERT INTO `inventori` (`id`, `barang`, `jumlah`, `kayu`) VALUES
+(1, 'uang', 3000, 0),
+(2, 'damar', 5, 0),
+(3, 'gaharu', 0, 0),
+(4, 'jati', 0, 0),
+(5, 'mahoni', 0, 0),
+(6, 'pupuk', 5, 0),
+(7, 'pestisida', 5, 0);
 
 -- --------------------------------------------------------
 
@@ -76,9 +77,9 @@ INSERT INTO `inventori` (`id`, `barang`, `jumlah`) VALUES
 DROP TABLE IF EXISTS `lahan`;
 CREATE TABLE IF NOT EXISTS `lahan` (
 `lahan` bigint(20) unsigned NOT NULL,
-  `pohon` int(11) DEFAULT NULL,
-  `air` int(11) DEFAULT NULL,
-  `umur` int(11) DEFAULT NULL,
+  `pohon` int(11) NOT NULL,
+  `air` int(11) NOT NULL,
+  `umur` int(11) NOT NULL,
   `status` varchar(10) DEFAULT NULL,
   `img` varchar(300) DEFAULT NULL,
   `maxAir` int(11) NOT NULL,
@@ -86,30 +87,32 @@ CREATE TABLE IF NOT EXISTS `lahan` (
   `level` int(11) NOT NULL,
   `pupuk` int(11) NOT NULL,
   `pestisida` int(11) NOT NULL,
-  `critical` int(11) NOT NULL
+  `critical` int(11) NOT NULL,
+  `berpohon` varchar(5) NOT NULL,
+  `siapPanen` varchar(5) NOT NULL DEFAULT 'false'
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lahan`
 --
 
-INSERT INTO `lahan` (`lahan`, `pohon`, `air`, `umur`, `status`, `img`, `maxAir`, `maxUmur`, `level`, `pupuk`, `pestisida`, `critical`) VALUES
-(1, 1, 20, 6, 'mati', '/main/IMG/pohon/mati1.png', 200, 11, 1, 0, 0, 2),
-(2, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(3, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(4, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(5, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(6, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(7, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(8, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(9, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(10, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(11, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(12, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(13, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(14, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(15, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0),
-(16, 0, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0);
+INSERT INTO `lahan` (`lahan`, `pohon`, `air`, `umur`, `status`, `img`, `maxAir`, `maxUmur`, `level`, `pupuk`, `pestisida`, `critical`, `berpohon`, `siapPanen`) VALUES
+(1, 14, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(2, 14, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(3, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(4, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(5, 14, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(6, 14, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(7, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(8, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(9, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(10, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(11, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(12, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(13, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(14, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(15, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false'),
+(16, 14, 0, 0, 'kering', NULL, 0, 0, 0, 0, 0, 0, 'false', 'false');
 
 -- --------------------------------------------------------
 
@@ -124,18 +127,31 @@ CREATE TABLE IF NOT EXISTS `pohon` (
   `umur` int(11) NOT NULL,
   `maxair` int(11) DEFAULT NULL,
   `h_beli` int(11) NOT NULL,
-  `h_jual` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  `h_jual` int(11) NOT NULL,
+  `airMin` int(11) NOT NULL,
+  `maxPupuk` int(11) NOT NULL,
+  `maxPest` int(11) NOT NULL,
+  `hari` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pohon`
 --
 
-INSERT INTO `pohon` (`id`, `pohon`, `umur`, `maxair`, `h_beli`, `h_jual`) VALUES
-(1, 'damar', 11, 200, 100, 5000),
-(2, 'gaharu', 14, 250, 140, 7000),
-(3, 'jati', 15, 350, 160, 8000),
-(4, 'mahoni', 12, 300, 120, 6000);
+INSERT INTO `pohon` (`id`, `pohon`, `umur`, `maxair`, `h_beli`, `h_jual`, `airMin`, `maxPupuk`, `maxPest`, `hari`) VALUES
+(1, 'damar', 10, 200, 100, 2000, 70, 1, 0, 3),
+(2, 'gaharu', 11, 250, 120, 3000, 80, 1, 0, 3),
+(3, 'jati', 14, 350, 160, 5000, 100, 1, 1, 4),
+(4, 'mahoni', 12, 300, 140, 4000, 90, 1, 1, 3),
+(5, 'damar', 10, 400, 100, 2000, 170, 3, 1, 6),
+(6, 'gaharu', 11, 450, 120, 3000, 180, 3, 1, 7),
+(7, 'jati', 14, 550, 160, 5000, 200, 3, 3, 9),
+(8, 'mahoni', 12, 500, 140, 4000, 190, 3, 2, 7),
+(9, 'damar', 10, 600, 100, 2000, 270, 6, 2, 10),
+(10, 'gaharu', 11, 650, 120, 3000, 280, 6, 3, 11),
+(11, 'jati', 14, 750, 160, 5000, 300, 6, 5, 14),
+(12, 'mahoni', 12, 700, 140, 4000, 290, 6, 4, 12),
+(14, '0', 0, 0, 0, 0, 0, 0, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -183,7 +199,7 @@ MODIFY `lahan` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 -- AUTO_INCREMENT for table `pohon`
 --
 ALTER TABLE `pohon`
-MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
